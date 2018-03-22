@@ -8,10 +8,10 @@ public class Ship {
         nbTimesTouched = 0;
         String first = startCoord.substring(0, 1);
         startLine = first.toUpperCase().charAt(0);
-        startColumn = Integer.parseInt(startCoord);
+        startColumn = Integer.parseInt(startCoord.substring(1));
         first = endCoord.substring(0,1);
         endLine = first.toUpperCase().charAt(0);
-        endColumn = Integer.parseInt(endCoord);
+        endColumn = Integer.parseInt(endCoord.substring(1));
         if(startLine == endLine)
         {
             size = Math.abs(startColumn - endColumn) + 1;
@@ -53,7 +53,7 @@ public class Ship {
     }
 
     public String toString() {
-        StringBuilder output = new StringBuilder("Ship size : ");
+        StringBuffer output = new StringBuffer("Ship size : ");
         output.append(size);
         output.append(" [start : ");
         output.append(startLine);
@@ -62,6 +62,8 @@ public class Ship {
         output.append(endLine);
         output.append(endColumn);
         output.append("]\n");
+        output.append("Number of times touched : ");
+        output.append(nbTimesTouched);
         return output.toString();
 
     }
