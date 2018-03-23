@@ -1,7 +1,55 @@
 public class Ship {
-    char startLine, endLine;
-    int startColumn, endColumn;
+    private char startLine, endLine;
+    private int startColumn, endColumn;
     private int size, nbTimesTouched;
+
+    public char getStartLine() {
+        return startLine;
+    }
+
+    public void setStartLine(char startLine) {
+        this.startLine = startLine;
+    }
+
+    public char getEndLine() {
+        return endLine;
+    }
+
+    public void setEndLine(char endLine) {
+        this.endLine = endLine;
+    }
+
+    public int getStartColumn() {
+        return startColumn;
+    }
+
+    public void setStartColumn(int startColumn) {
+        this.startColumn = startColumn;
+    }
+
+    public int getEndColumn() {
+        return endColumn;
+    }
+
+    public void setEndColumn(int endColumn) {
+        this.endColumn = endColumn;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getNbTimesTouched() {
+        return nbTimesTouched;
+    }
+
+    public void setNbTimesTouched(int nbTimesTouched) {
+        this.nbTimesTouched = nbTimesTouched;
+    }
 
 
     public Ship(String startCoord, String endCoord){ //On attend des coordonnées telles que A1, B5...
@@ -47,9 +95,29 @@ public class Ship {
         }
         return false;
     }
-    public boolean isDestroyed(){
+    public boolean isDestroyed()
+    {
         return nbTimesTouched == size;
 
+    }
+
+    public static boolean isCorrect(String startCoord, String endCoord)
+    {
+        char startLine, endLine;
+        int startColumn, endColumn, size = 0;
+        startLine = startCoord.substring(0,1).toUpperCase().charAt(0);
+        endLine = endCoord.substring(0,1).toUpperCase().charAt(0);
+        startColumn = Integer.parseInt(startCoord.substring(1));
+        endColumn = Integer.parseInt(endCoord.substring(1));
+        if(startColumn == endColumn)
+        {
+            size = Math.abs(startLine - endLine) +1;
+        }
+        else if(startLine == endLine)
+        {
+            size = Math.abs(startColumn - endColumn) +1;
+        }
+        return (size == 5) || (size == 4) || (size == 3) || (size == 2);
     }
 
     public String toString() {
