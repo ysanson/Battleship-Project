@@ -55,6 +55,8 @@ public class Ship {
     }
 
 
+
+
     public Ship(String startCoord, String endCoord){ //On attend des coordonnées telles que A1, B5...
         nbTimesTouched = 0;
         String first = startCoord.substring(0, 1);

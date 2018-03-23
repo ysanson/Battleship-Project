@@ -14,18 +14,8 @@ public class Main {
         }while(!Ship.isCorrect(startCoord, endCoord));
         Ship navire = new Ship(startCoord, endCoord);
         System.out.println(navire.toString());
-        System.out.println("Entrez un missile : ");
-        String missile = sc.nextLine();
-        if(navire.isHit(missile))
-        {
-            System.out.println("Touché ! ");
-        }
-        else
-        {
-            System.out.println("Raté ! ");
-        }
-        System.out.println(navire.toString());
-        System.out.println(navire.shipGrid());
+        Joueur j1 = new Joueur(navire, navire, navire, navire, navire);
+        System.out.println(j1);
 
     }
 }
