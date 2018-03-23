@@ -1,37 +1,39 @@
+import java.util.List;
+
 public class Ship {
-    private char startLine, endLine;
-    private int startColumn, endColumn;
+    private int startLine, endLine;
+    private char startColumn, endColumn;
     private int size, nbTimesTouched;
 
-    public char getStartLine() {
+    public int getStartLine() {
         return startLine;
     }
 
-    public void setStartLine(char startLine) {
+    public void setStartLine(int startLine) {
         this.startLine = startLine;
     }
 
-    public char getEndLine() {
+    public int getEndLine() {
         return endLine;
     }
 
-    public void setEndLine(char endLine) {
+    public void setEndLine(int endLine) {
         this.endLine = endLine;
     }
 
-    public int getStartColumn() {
+    public char getStartColumn() {
         return startColumn;
     }
 
-    public void setStartColumn(int startColumn) {
+    public void setStartColumn(char startColumn) {
         this.startColumn = startColumn;
     }
 
-    public int getEndColumn() {
+    public char getEndColumn() {
         return endColumn;
     }
 
-    public void setEndColumn(int endColumn) {
+    public void setEndColumn(char endColumn) {
         this.endColumn = endColumn;
     }
 
@@ -55,11 +57,11 @@ public class Ship {
     public Ship(String startCoord, String endCoord){ //On attend des coordonnées telles que A1, B5...
         nbTimesTouched = 0;
         String first = startCoord.substring(0, 1);
-        startLine = first.toUpperCase().charAt(0);
-        startColumn = Integer.parseInt(startCoord.substring(1));
+        startColumn = first.toUpperCase().charAt(0);
+        startLine = Integer.parseInt(startCoord.substring(1));
         first = endCoord.substring(0,1);
-        endLine = first.toUpperCase().charAt(0);
-        endColumn = Integer.parseInt(endCoord.substring(1));
+        endColumn = first.toUpperCase().charAt(0);
+        endLine = Integer.parseInt(endCoord.substring(1));
         if(startLine == endLine)
         {
             size = Math.abs(startColumn - endColumn) + 1;
@@ -118,6 +120,35 @@ public class Ship {
             size = Math.abs(startColumn - endColumn) +1;
         }
         return (size == 5) || (size == 4) || (size == 3) || (size == 2);
+    }
+
+    public List<String>shipGrid()
+    {
+        List<String>shipRepresentation = new ArrayList<String>();
+        String coordinate;
+        coordinate= getStartColumn() + Integer.toString(getStartLine());
+        int line = getStartLine();
+        char column = getStartColumn();
+        shipRepresentation.add(coordinate);
+        if(getStartColumn() == getEndColumn())
+        {
+            while(line <= getEndLine())
+            {
+                line ++;
+                coordinate = getStartColumn() + Integer.toString(line);
+                shipRepresentation.add(coordinate);
+            }
+        }
+        else
+        {
+            while(column <= getEndColumn())
+            {
+                column++;
+                coordinate = column + Integer.toString(line);
+                shipRepresentation.add(coordinate);
+            }
+        }
+        return shipRepresentation;
     }
 
     public String toString() {

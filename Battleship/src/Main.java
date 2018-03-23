@@ -25,6 +25,7 @@ public class Main {
             System.out.println("Raté ! ");
         }
         System.out.println(navire.toString());
-        
+        System.out.println(navire.shipGrid());
+
     }
 }
