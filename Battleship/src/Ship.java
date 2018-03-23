@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
@@ -74,11 +75,10 @@ public class Ship {
     }
 
     public boolean isHit(String missileCoord){ //Coordonnées de type A1, B5...
-        int columnHit;
-        char lineHit;
-        lineHit = missileCoord.substring(0, 1).charAt(0);
-        lineHit = Character.toUpperCase(lineHit);
-        columnHit = Integer.parseInt(missileCoord.substring(1));
+        char columnHit;
+        int lineHit;
+        columnHit = missileCoord.substring(0, 1).toUpperCase().charAt(0);
+        lineHit = Integer.parseInt(missileCoord.substring(1));
         if(startLine == endLine && startLine == lineHit) //Navire en ligne et tir sur celle-ci
         {
             if(columnHit >= startColumn && columnHit <= endColumn) //Tir entre la colonne de début et la colonne de fin
@@ -132,7 +132,7 @@ public class Ship {
         shipRepresentation.add(coordinate);
         if(getStartColumn() == getEndColumn())
         {
-            while(line <= getEndLine())
+            while(line < getEndLine())
             {
                 line ++;
                 coordinate = getStartColumn() + Integer.toString(line);
@@ -141,7 +141,7 @@ public class Ship {
         }
         else
         {
-            while(column <= getEndColumn())
+            while(column < getEndColumn())
             {
                 column++;
                 coordinate = column + Integer.toString(line);
@@ -151,15 +151,16 @@ public class Ship {
         return shipRepresentation;
     }
 
+    @Override
     public String toString() {
         StringBuffer output = new StringBuffer("Ship size : ");
         output.append(size);
         output.append(" [start : ");
-        output.append(startLine);
         output.append(startColumn);
+        output.append(startLine);
         output.append(" Finish : ");
-        output.append(endLine);
         output.append(endColumn);
+        output.append(endLine);
         output.append("]\n");
         output.append("Number of times touched : ");
         output.append(nbTimesTouched);
