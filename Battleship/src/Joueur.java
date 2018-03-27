@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Joueur {
+    private String name;
     private Ship aircraftCarrier;
     private Ship battleship;
     private Ship cruiser;
@@ -11,6 +12,14 @@ public class Joueur {
     private int nbShipsLeft;
     private List<String>shotsFired;
     private List<String>shotsReceived;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getNbShipsLeft() {
         return nbShipsLeft;
@@ -144,7 +153,8 @@ public class Joueur {
     }
 
 
-    public Joueur() {
+    public Joueur(String name) {
+        this.name = name;
         nbShipsLeft = 5;
         shotsFired = new ArrayList<>();
         shotsReceived = new ArrayList<>();
@@ -154,12 +164,12 @@ public class Joueur {
     @Override
     public String toString() {
         return "Joueur{" +
-                "aircraftCarrier=" + aircraftCarrier.toString() +
-                ", battleship=" + battleship.toString() +
-                ", cruiser=" + cruiser.toString() +
-                ", submarine=" + submarine.toString() +
-                ", destroyer=" + destroyer.toString() +
-                ", nbShipsLeft=" + nbShipsLeft +
+                 aircraftCarrier.toString() + "\n" +
+                battleship.toString() + "\n" +
+                cruiser.toString() + "\n" +
+                submarine.toString() + "\n" +
+                destroyer.toString() + "\n" +
+                "Nb ships left : " + nbShipsLeft +
                 '}';
     }
 }
