@@ -25,13 +25,13 @@ public class Joueur {
     }
 
     public void setAircraftCarrier(Ship aircraftCarrier) {
-        if(aircraftCarrier.getSize() == 5)
+        if(aircraftCarrier.getType().equals(ShipType.aircraftCarrier))
         {
             this.aircraftCarrier = aircraftCarrier;
         }
         else
         {
-            throw new RuntimeException("Aircraft Carrier must be a size of 5");
+            System.out.println("Aircraft Carrier must be a size of 5");
         }
 
     }
@@ -41,13 +41,13 @@ public class Joueur {
     }
 
     public void setBattleship(Ship battleship) {
-        if(battleship.getSize() == 4)
+        if(battleship.getType().equals(ShipType.battleship))
         {
             this.battleship = battleship;
         }
         else
         {
-            throw new RuntimeException("Battleship must be a size of 4");
+            System.out.println("Battleship must be a size of 4");
         }
 
     }
@@ -57,13 +57,13 @@ public class Joueur {
     }
 
     public void setCruiser(Ship cruiser) {
-        if(cruiser.getSize() == 3)
+        if(cruiser.getType().equals(ShipType.cruiser))
         {
             this.cruiser = cruiser;
         }
         else
         {
-            throw new RuntimeException("Cruiser must be a size of 3");
+            System.out.println("Cruiser must be a size of 3");
         }
 
     }
@@ -73,13 +73,13 @@ public class Joueur {
     }
 
     public void setSubmarine(Ship submarine) {
-        if(submarine.getSize() == 3)
+        if(submarine.getType().equals(ShipType.submarine))
         {
             this.submarine = submarine;
         }
         else
         {
-            throw new RuntimeException("Submarine must be a size of 3");
+            System.out.println("Submarine must be a size of 3");
         }
 
     }
@@ -89,13 +89,13 @@ public class Joueur {
     }
 
     public void setDestroyer(Ship destroyer) {
-        if(destroyer.getSize() == 2)
+        if(destroyer.getType().equals(ShipType.destroyer))
         {
             this.destroyer = destroyer;
         }
         else
         {
-            throw new RuntimeException("Destroyer must be a size of 2");
+            System.out.println("Destroyer must be a size of 2");
         }
     }
 
@@ -128,7 +128,7 @@ public class Joueur {
         }
         else
         {
-            throw new RuntimeException("Missile already shot on this position");
+            System.out.println("Missile already shot on this position");
         }
     }
 
@@ -139,42 +139,17 @@ public class Joueur {
             addShotFired(missile);
         }
         else{
-            throw new RuntimeException("Missile already fired at this position");
+            System.out.println("Missile already fired on this position");
         }
     }
 
-    public boolean noOverlap(Ship aircraftCarrier, Ship battleship, Ship cruiser, Ship submarine, Ship destroyer)
-    {
-        return (Collections.disjoint(aircraftCarrier.shipGrid(), battleship.shipGrid())
-                || Collections.disjoint(aircraftCarrier.shipGrid(), cruiser.shipGrid())
-                || Collections.disjoint(aircraftCarrier.shipGrid(), submarine.shipGrid())
-                || Collections.disjoint(aircraftCarrier.shipGrid(), destroyer.shipGrid())
-                || Collections.disjoint(battleship.shipGrid(), cruiser.shipGrid())
-                || Collections.disjoint((battleship.shipGrid()), submarine.shipGrid())
-                || Collections.disjoint(battleship.shipGrid(), destroyer.shipGrid())
-                || Collections.disjoint(cruiser.shipGrid(), submarine.shipGrid())
-                || Collections.disjoint(cruiser.shipGrid(), destroyer.shipGrid())
-                || Collections.disjoint(submarine.shipGrid(), destroyer.shipGrid()));
+
+    public Joueur() {
+        nbShipsLeft = 5;
+        shotsFired = new ArrayList<>();
+        shotsReceived = new ArrayList<>();
     }
 
-
-    public Joueur(Ship aircraftCarrier, Ship battleship, Ship cruiser, Ship submarine, Ship destroyer) {
-        if(noOverlap(aircraftCarrier, battleship, cruiser, submarine, destroyer))
-        {
-            setAircraftCarrier(aircraftCarrier);
-            setBattleship(battleship);
-            setCruiser(cruiser);
-            setSubmarine(submarine);
-            setDestroyer(destroyer);
-            nbShipsLeft = 5;
-            shotsFired = new ArrayList<>();
-            shotsReceived = new ArrayList<>();
-        }
-        else
-        {
-            throw new RuntimeException("Ships are overlapping !");
-        }
-    }
 
     @Override
     public String toString() {

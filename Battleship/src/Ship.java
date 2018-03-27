@@ -1,10 +1,21 @@
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Ship {
     private int startLine, endLine;
     private char startColumn, endColumn;
-    private int size, nbTimesTouched;
+    private int nbTimesTouched;
+    private ShipType type;
+
+    public ShipType getType() {
+        return type;
+    }
+
+    public void setType(ShipType type) {
+        this.type = type;
+    }
 
     public int getStartLine() {
         return startLine;
@@ -38,14 +49,6 @@ public class Ship {
         this.endColumn = endColumn;
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     public int getNbTimesTouched() {
         return nbTimesTouched;
     }
@@ -56,8 +59,7 @@ public class Ship {
 
 
 
-
-    public Ship(String startCoord, String endCoord){ //On attend des coordonnées telles que A1, B5...
+    public Ship(String startCoord, String endCoord, ShipType type){ //On attend des coordonnées telles que A1, B5...
         nbTimesTouched = 0;
         String first = startCoord.substring(0, 1);
         startColumn = first.toUpperCase().charAt(0);
@@ -65,15 +67,7 @@ public class Ship {
         first = endCoord.substring(0,1);
         endColumn = first.toUpperCase().charAt(0);
         endLine = Integer.parseInt(endCoord.substring(1));
-        if(startLine == endLine)
-        {
-            size = Math.abs(startColumn - endColumn) + 1;
-        }
-        else if(startColumn == endColumn)
-        {
-            size = Math.abs(startLine - endLine) + 1;
-        }
-
+        this.type = type;
     }
 
     public boolean isHit(String missileCoord){ //Coordonnées de type A1, B5...
@@ -83,7 +77,7 @@ public class Ship {
         lineHit = Integer.parseInt(missileCoord.substring(1));
         if(startLine == endLine && startLine == lineHit) //Navire en ligne et tir sur celle-ci
         {
-            if(columnHit >= startColumn && columnHit <= endColumn) //Tir entre la colonne de début et la colonne de fin
+            if((columnHit >= startColumn && columnHit <= endColumn)) //Tir entre la colonne de début et la colonne de fin
             {
                 nbTimesTouched ++;
                 return true;
@@ -99,34 +93,33 @@ public class Ship {
         }
         return false;
     }
+
     public boolean isDestroyed()
     {
-        return nbTimesTouched == size;
+        return nbTimesTouched == type.getLength();
 
     }
 
-    public static boolean isCorrect(String startCoord, String endCoord)
+    public static boolean isCorrect(String startCoord, String endCoord, ShipType type)
     {
-        char startLine, endLine;
-        int startColumn, endColumn, size = 0;
-        startLine = startCoord.substring(0,1).toUpperCase().charAt(0);
-        endLine = endCoord.substring(0,1).toUpperCase().charAt(0);
-        startColumn = Integer.parseInt(startCoord.substring(1));
-        endColumn = Integer.parseInt(endCoord.substring(1));
-        if(startColumn == endColumn)
-        {
-            size = Math.abs(startLine - endLine) +1;
-        }
-        else if(startLine == endLine)
-        {
-            size = Math.abs(startColumn - endColumn) +1;
-        }
-        return (size == 5) || (size == 4) || (size == 3) || (size == 2);
+       int startLine, endLine, size = 0;
+       char startColumn, endColumn;
+       startColumn = startCoord.toUpperCase().charAt(0);
+       endColumn = endCoord.toUpperCase().charAt(0);
+       startLine = Integer.parseInt(startCoord.substring(1));
+       endLine = Integer.parseInt(endCoord.substring(1));
+       if(Character.compare(startColumn, endColumn) == 0){
+           size = Math.abs(startLine - endLine)+1;
+       }
+       else if(startLine == endLine){
+           size = Math.abs(Character.getNumericValue(startColumn) - Character.getNumericValue(endColumn))+1;
+       }
+       return size == type.getLength();
     }
 
     public List<String>shipGrid()
     {
-        List<String>shipRepresentation = new ArrayList<String>();
+        List<String>shipRepresentation = new ArrayList<>();
         String coordinate;
         coordinate= getStartColumn() + Integer.toString(getStartLine());
         int line = getStartLine();
@@ -153,10 +146,21 @@ public class Ship {
         return shipRepresentation;
     }
 
+    public boolean isOverlapping(Joueur player){
+        if (Collections.disjoint(this.shipGrid(), player.getAircraftCarrier().shipGrid())) return true;
+        if (Collections.disjoint(this.shipGrid(), player.getBattleship().shipGrid())) return true;
+        if (Collections.disjoint(this.shipGrid(), player.getCruiser().shipGrid())) return true;
+        if (Collections.disjoint(this.shipGrid(), player.getSubmarine().shipGrid())) return true;
+        if (Collections.disjoint(this.shipGrid(), player.getDestroyer().shipGrid())) return true;
+        return false;
+    }
+
     @Override
     public String toString() {
-        StringBuffer output = new StringBuffer("Ship size : ");
-        output.append(size);
+        StringBuffer output = new StringBuffer("Ship type : ");
+        output.append(type.getName());
+        output.append(" Length : ");
+        output.append(type.getLength());
         output.append(" [start : ");
         output.append(startColumn);
         output.append(startLine);
