@@ -40,7 +40,7 @@ public class Joueur {
         }
         else
         {
-            System.out.println("Aircraft Carrier must be a size of 5");
+            System.out.println("This is not an aicraft carrier");
         }
 
     }
@@ -56,7 +56,7 @@ public class Joueur {
         }
         else
         {
-            System.out.println("Battleship must be a size of 4");
+            System.out.println("This is not a batteship");
         }
 
     }
@@ -72,7 +72,7 @@ public class Joueur {
         }
         else
         {
-            System.out.println("Cruiser must be a size of 3");
+            System.out.println("This is not a cruiser");
         }
 
     }
@@ -88,7 +88,7 @@ public class Joueur {
         }
         else
         {
-            System.out.println("Submarine must be a size of 3");
+            System.out.println("This is not a submarine");
         }
 
     }
@@ -104,7 +104,7 @@ public class Joueur {
         }
         else
         {
-            System.out.println("Destroyer must be a size of 2");
+            System.out.println("This is not a destroyer");
         }
     }
 
@@ -126,26 +126,30 @@ public class Joueur {
         shotsReceived.add(coordinates);
     }
 
-    public void receiveMissile(String missile)
+    public boolean receiveMissile(String missile)
     {
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
-            boolean hasHit;
             if (aircraftCarrier.isHit(missile) || battleship.isHit(missile) || cruiser.isHit(missile) || destroyer.isHit(missile) || submarine.isHit(missile)) {
-                hasHit = true;
+                return true;
+            }
+            else{
+                return false;
             }
         }
         else
         {
             System.out.println("Missile already shot on this position");
+            return false;
         }
     }
 
-    public void sendMissile(String missile)
+    public void sendMissile(String missile, Joueur playerReceiving)
     {
         if(!shotsFired.contains(missile))
         {
             addShotFired(missile);
+            playerReceiving.receiveMissile(missile);
         }
         else{
             System.out.println("Missile already fired on this position");
@@ -158,6 +162,15 @@ public class Joueur {
         nbShipsLeft = 5;
         shotsFired = new ArrayList<>();
         shotsReceived = new ArrayList<>();
+    }
+
+    public static boolean isOverlapping(Ship ship, Joueur player){
+        if (Collections.disjoint(ship.shipGrid(), player.getAircraftCarrier().shipGrid())) return true;
+        if (Collections.disjoint(ship.shipGrid(), player.getBattleship().shipGrid())) return true;
+        if (Collections.disjoint(ship.shipGrid(), player.getCruiser().shipGrid())) return true;
+        if (Collections.disjoint(ship.shipGrid(), player.getSubmarine().shipGrid())) return true;
+        if (Collections.disjoint(ship.shipGrid(), player.getDestroyer().shipGrid())) return true;
+        return false;
     }
 
 

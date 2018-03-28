@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Ship {
-    private int startLine, endLine;
-    private char startColumn, endColumn;
+    private char startLine, endLine;
+    private int startColumn, endColumn;
     private int nbTimesTouched;
     private ShipType type;
 
@@ -17,35 +17,35 @@ public class Ship {
         this.type = type;
     }
 
-    public int getStartLine() {
+    public char getStartLine() {
         return startLine;
     }
 
-    public void setStartLine(int startLine) {
+    public void setStartLine(char startLine) {
         this.startLine = startLine;
     }
 
-    public int getEndLine() {
+    public char getEndLine() {
         return endLine;
     }
 
-    public void setEndLine(int endLine) {
+    public void setEndLine(char endLine) {
         this.endLine = endLine;
     }
 
-    public char getStartColumn() {
+    public int getStartColumn() {
         return startColumn;
     }
 
-    public void setStartColumn(char startColumn) {
+    public void setStartColumn(int startColumn) {
         this.startColumn = startColumn;
     }
 
-    public char getEndColumn() {
+    public int getEndColumn() {
         return endColumn;
     }
 
-    public void setEndColumn(char endColumn) {
+    public void setEndColumn(int endColumn) {
         this.endColumn = endColumn;
     }
 
@@ -58,23 +58,20 @@ public class Ship {
     }
 
 
-
     public Ship(String startCoord, String endCoord, ShipType type){ //On attend des coordonnées telles que A1, B5...
         nbTimesTouched = 0;
-        String first = startCoord.substring(0, 1);
-        startColumn = first.toUpperCase().charAt(0);
-        startLine = Integer.parseInt(startCoord.substring(1));
-        first = endCoord.substring(0,1);
-        endColumn = first.toUpperCase().charAt(0);
-        endLine = Integer.parseInt(endCoord.substring(1));
+        startLine = startCoord.toUpperCase().charAt(0);
+        startColumn = Integer.parseInt(startCoord.substring(1));
+        endLine = endCoord.toUpperCase().charAt(0);
+        endColumn = Integer.parseInt(endCoord.substring(1));
         this.type = type;
     }
 
     public boolean isHit(String missileCoord){ //Coordonnées de type A1, B5...
-        char columnHit;
-        int lineHit;
-        columnHit = missileCoord.substring(0, 1).toUpperCase().charAt(0);
-        lineHit = Integer.parseInt(missileCoord.substring(1));
+        int columnHit;
+        char lineHit;
+        lineHit = missileCoord.toUpperCase().charAt(0);
+        columnHit = Integer.parseInt(missileCoord.substring(1));
         if(startLine == endLine && startLine == lineHit) //Navire en ligne et tir sur celle-ci
         {
             if((columnHit >= startColumn && columnHit <= endColumn)) //Tir entre la colonne de début et la colonne de fin
@@ -102,12 +99,12 @@ public class Ship {
 
     public static boolean isCorrect(String startCoord, String endCoord, ShipType type)
     {
-       int startLine, endLine, size = 0;
-       char startColumn, endColumn;
-       startColumn = startCoord.toUpperCase().charAt(0);
-       endColumn = endCoord.toUpperCase().charAt(0);
-       startLine = Integer.parseInt(startCoord.substring(1));
-       endLine = Integer.parseInt(endCoord.substring(1));
+       char startLine, endLine;
+       int startColumn, endColumn, size = 0;
+       startLine = startCoord.toUpperCase().charAt(0);
+       endLine = endCoord.toUpperCase().charAt(0);
+       startColumn = Integer.parseInt(startCoord.substring(1));
+       endColumn = Integer.parseInt(endCoord.substring(1));
        if(Character.compare(startColumn, endColumn) == 0){
            size = Math.abs(startLine - endLine)+1;
        }
@@ -146,14 +143,7 @@ public class Ship {
         return shipRepresentation;
     }
 
-    public boolean isOverlapping(Joueur player){
-        if (Collections.disjoint(this.shipGrid(), player.getAircraftCarrier().shipGrid())) return true;
-        if (Collections.disjoint(this.shipGrid(), player.getBattleship().shipGrid())) return true;
-        if (Collections.disjoint(this.shipGrid(), player.getCruiser().shipGrid())) return true;
-        if (Collections.disjoint(this.shipGrid(), player.getSubmarine().shipGrid())) return true;
-        if (Collections.disjoint(this.shipGrid(), player.getDestroyer().shipGrid())) return true;
-        return false;
-    }
+
 
     @Override
     public String toString() {
