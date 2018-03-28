@@ -12,6 +12,7 @@ public class Joueur {
     private int nbShipsLeft;
     private List<String>shotsFired;
     private List<String>shotsReceived;
+    private boolean currentPlayer;
 
     public String getName() {
         return name;
@@ -124,6 +125,14 @@ public class Joueur {
     public void addShotsReceived(String coordinates)
     {
         shotsReceived.add(coordinates);
+    }
+
+    public boolean isCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(boolean currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public boolean receiveMissile(String missile)
