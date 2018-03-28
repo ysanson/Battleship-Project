@@ -144,18 +144,18 @@ public class Joueur {
         }
     }
 
-    public void sendMissile(String missile, Joueur playerReceiving)
+    public boolean sendMissile(String missile, Joueur playerReceiving)
     {
         if(!shotsFired.contains(missile))
         {
             addShotFired(missile);
-            playerReceiving.receiveMissile(missile);
+            return playerReceiving.receiveMissile(missile);
         }
         else{
             System.out.println("Missile already fired on this position");
+            return false;
         }
     }
-
 
     public Joueur(String name) {
         this.name = name;
@@ -172,7 +172,6 @@ public class Joueur {
         if (Collections.disjoint(ship.shipGrid(), player.getDestroyer().shipGrid())) return true;
         return false;
     }
-
 
     @Override
     public String toString() {

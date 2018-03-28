@@ -15,12 +15,11 @@ public class Main {
         do {
             System.out.println("Entrez les coordonnées du début du navire : ");
             startCoord = sc.nextLine();
-            System.out.println("Entrez les coordonénes de fin du navire : ");
+            System.out.println("Entrez les coordonnées de fin du navire : ");
             endCoord = sc.nextLine();
         }while(!Ship.isCorrect(startCoord, endCoord, ac));
         Ship navire = new Ship(startCoord, endCoord, ac);
         System.out.println(navire.toString());
-
 
     }
 }

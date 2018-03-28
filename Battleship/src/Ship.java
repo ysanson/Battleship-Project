@@ -105,11 +105,13 @@ public class Ship {
        endLine = endCoord.toUpperCase().charAt(0);
        startColumn = Integer.parseInt(startCoord.substring(1));
        endColumn = Integer.parseInt(endCoord.substring(1));
-       if(Character.compare(startColumn, endColumn) == 0){
-           size = Math.abs(startLine - endLine)+1;
-       }
-       else if(startLine == endLine){
-           size = Math.abs(Character.getNumericValue(startColumn) - Character.getNumericValue(endColumn))+1;
+       if(startLine<='J' && endLine<='J' && startColumn<=10 && endColumn<=10){
+           if(Character.compare(startColumn, endColumn) == 0){
+               size = Math.abs(startLine - endLine)+1;
+           }
+           else if(startLine == endLine){
+               size = Math.abs(Character.getNumericValue(startColumn) - Character.getNumericValue(endColumn))+1;
+           }
        }
        return size == type.getLength();
     }
