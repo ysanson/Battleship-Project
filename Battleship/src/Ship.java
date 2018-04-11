@@ -57,16 +57,6 @@ public class Ship {
         this.nbTimesTouched = nbTimesTouched;
     }
 
-
-    public Ship(String startCoord, String endCoord, ShipType type){ //On attend des coordonnées telles que A1, B5...
-        nbTimesTouched = 0;
-        startLine = startCoord.toUpperCase().charAt(0);
-        startColumn = Integer.parseInt(startCoord.substring(1));
-        endLine = endCoord.toUpperCase().charAt(0);
-        endColumn = Integer.parseInt(endCoord.substring(1));
-        this.type = type;
-    }
-
     public boolean isHit(String missileCoord){ //Coordonnées de type A1, B5...
         int columnHit;
         char lineHit;
@@ -94,7 +84,45 @@ public class Ship {
     public boolean isDestroyed()
     {
         return nbTimesTouched == type.getLength();
+    }
 
+    public List<String>shipGrid()
+    {
+        List<String>shipRepresentation = new ArrayList<>();
+        String coordinate;
+        coordinate= getStartLine() + Integer.toString(getStartColumn()) ;
+        char line = getStartLine();
+        int column = getStartColumn();
+        shipRepresentation.add(coordinate);
+        if(getStartColumn() == getEndColumn())
+        {
+            while(line < getEndLine())
+            {
+                line ++;
+                coordinate = line + Integer.toString(getStartColumn());
+                shipRepresentation.add(coordinate);
+            }
+        }
+        else
+        {
+            while(column < getEndColumn())
+            {
+                column++;
+                coordinate = line + Integer.toString(column);
+                shipRepresentation.add(coordinate);
+            }
+        }
+        return shipRepresentation;
+    }
+
+
+    public Ship(String startCoord, String endCoord, ShipType type){ //On attend des coordonnées telles que A1, B5...
+        nbTimesTouched = 0;
+        startLine = startCoord.toUpperCase().charAt(0);
+        startColumn = Integer.parseInt(startCoord.substring(1));
+        endLine = endCoord.toUpperCase().charAt(0);
+        endColumn = Integer.parseInt(endCoord.substring(1));
+        this.type = type;
     }
 
     public static boolean isCorrect(String startCoord, String endCoord, ShipType type)
@@ -106,45 +134,15 @@ public class Ship {
        startColumn = Integer.parseInt(startCoord.substring(1));
        endColumn = Integer.parseInt(endCoord.substring(1));
        if(startLine<='J' && endLine<='J' && startColumn<=10 && endColumn<=10){
-           if(Character.compare(startColumn, endColumn) == 0){
+           if(startColumn == endColumn){
                size = Math.abs(startLine - endLine)+1;
            }
-           else if(startLine == endLine){
-               size = Math.abs(Character.getNumericValue(startColumn) - Character.getNumericValue(endColumn))+1;
+           else if(Character.compare(startLine, endLine) == 0){
+               size = Math.abs(startColumn - endColumn)+1;
            }
-       }
-       return size == type.getLength();
+      }
+      return size == type.getLength();
     }
-
-    public List<String>shipGrid()
-    {
-        List<String>shipRepresentation = new ArrayList<>();
-        String coordinate;
-        coordinate= getStartColumn() + Integer.toString(getStartLine());
-        int line = getStartLine();
-        char column = getStartColumn();
-        shipRepresentation.add(coordinate);
-        if(getStartColumn() == getEndColumn())
-        {
-            while(line < getEndLine())
-            {
-                line ++;
-                coordinate = getStartColumn() + Integer.toString(line);
-                shipRepresentation.add(coordinate);
-            }
-        }
-        else
-        {
-            while(column < getEndColumn())
-            {
-                column++;
-                coordinate = column + Integer.toString(line);
-                shipRepresentation.add(coordinate);
-            }
-        }
-        return shipRepresentation;
-    }
-
 
 
     @Override
@@ -154,12 +152,12 @@ public class Ship {
         output.append(" Length : ");
         output.append(type.getLength());
         output.append(" [start : ");
-        output.append(startColumn);
         output.append(startLine);
+        output.append(startColumn);
         output.append(" Finish : ");
-        output.append(endColumn);
         output.append(endLine);
-        output.append("]\n");
+        output.append(endColumn);
+        output.append("] ");
         output.append("Number of times touched : ");
         output.append(nbTimesTouched);
         return output.toString();
