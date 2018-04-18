@@ -15,19 +15,21 @@ public class Main {
         Joueur j2 = new Joueur(name);
         Game game = new Game(j1, j2);
         game.initialize();
-        boolean hasHit;
+        int hasHit;
 
         while(!game.isFinished()){
             System.out.println("Get ready " + game.getCurrentPlayer().getName()+"!");
-            System.out.println("Enter a missile coordinate: ");
-            missileCoordinate = sc.nextLine();
-            hasHit = game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
-            if(hasHit){
-                System.out.println("Your missile touched the opponent ! Continue like this !");
-            }
-            else{
-                System.out.println("Your missile plunged in water. Better luck next time !");
-            }
+            do {
+                System.out.println("Enter a missile coordinate: ");
+                missileCoordinate = sc.nextLine();
+                hasHit = game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
+                if (hasHit == 1) {
+                    System.out.println("Your missile touched the opponent ! Continue like this !");
+                } else if (hasHit == 0) {
+                    System.out.println("Your missile plunged in water. Better luck next time !");
+                }
+            }while(hasHit==-1);
+            //We enter coordinates again if the player enters coordinates already tested(sendMissile returns-1)
             if(game.newTurn())
                 System.out.println(game.toString());
         }

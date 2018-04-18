@@ -116,7 +116,7 @@ public class Ship {
     }
 
 
-    public Ship(String startCoord, String endCoord, ShipType type){ //On attend des coordonnées telles que A1, B5...
+    public Ship(String startCoord, String endCoord, ShipType type){ //Waiting for coordinates like A1, B5...
         nbTimesTouched = 0;
         try {
             startLine = startCoord.toUpperCase().charAt(0);

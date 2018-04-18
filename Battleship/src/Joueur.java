@@ -179,16 +179,17 @@ public class Joueur {
         }
     }
 
-    public boolean sendMissile(String missile, Joueur playerReceiving)
+    public int sendMissile(String missile, Joueur playerReceiving)
     {
         if(!shotsFired.contains(missile))
         {
             addShotFired(missile);
-            return playerReceiving.receiveMissile(missile);
+            if(playerReceiving.receiveMissile(missile)) return 1;
+            else return 0;
         }
         else{
             System.out.println("Missile already fired on this position");
-            return false;
+            return -1;
         }
     }
 
