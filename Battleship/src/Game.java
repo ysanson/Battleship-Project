@@ -67,6 +67,11 @@ public class Game {
         else return player2;
     }
 
+    public Joueur getPassivePlayer(){
+        if(player1.isCurrentPlayer()) return player2;
+        else return player1;
+    }
+
     public void newTurn(){
         nbTurns++;
     }
