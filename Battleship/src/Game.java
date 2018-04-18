@@ -72,8 +72,28 @@ public class Game {
         else return player1;
     }
 
-    public void newTurn(){
-        nbTurns++;
+    public boolean newTurn(){
+        boolean isNew=false;
+        if(player2.isCurrentPlayer()) {
+            nbTurns++;
+            isNew = true;
+        }
+        player1.calculateShipsLeft();
+        player2.calculateShipsLeft();
+        changeCurrentPlayer();
+        return isNew;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Game status :\nPlayer 1:\n");
+        sb.append(player1.toString());
+        sb.append("\nPlayer 2:\n");
+        sb.append(player2.toString());
+        sb.append("\nNumber of turns :");
+        sb.append(nbTurns);
+        return sb.toString();
     }
 
 }

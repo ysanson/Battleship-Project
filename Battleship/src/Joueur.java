@@ -135,14 +135,40 @@ public class Joueur {
         return nbShipsLeft==0;
     }
 
+    public void calculateShipsLeft(){
+        nbShipsLeft=0;
+        if(!aircraftCarrier.isDestroyed()) nbShipsLeft++;
+        if(!battleship.isDestroyed()) nbShipsLeft++;
+        if(!cruiser.isDestroyed()) nbShipsLeft++;
+        if(!submarine.isDestroyed()) nbShipsLeft++;
+        if(!destroyer.isDestroyed()) nbShipsLeft++;
+    }
+
     public boolean receiveMissile(String missile)
     {
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
-            if (aircraftCarrier.isHit(missile) || battleship.isHit(missile) || cruiser.isHit(missile) || destroyer.isHit(missile) || submarine.isHit(missile)) {
+            if (aircraftCarrier.isHit(missile)) {
+                if(aircraftCarrier.isDestroyed())
+                    System.out.println("Aircraft Carrier sunk!");
                 return true;
-            }
-            else{
+            } else if (battleship.isHit(missile)) {
+                if(battleship.isDestroyed())
+                    System.out.println("Battleship sunk!");
+                return true;
+            } else if (cruiser.isHit(missile)) {
+                if(cruiser.isDestroyed())
+                    System.out.println("Cruiser sunk!");
+                return true;
+            } else if (destroyer.isHit(missile)) {
+                if(destroyer.isDestroyed())
+                    System.out.println("Destroyer sunk!");
+                return true;
+            } else if (submarine.isHit(missile)) {
+                if(submarine.isDestroyed())
+                    System.out.println("Submarine sunk!");
+                return true;
+            } else {
                 return false;
             }
         }
@@ -190,7 +216,6 @@ public class Joueur {
                 System.out.println("The ship is overlapping with another. Please change the coordinates");
             }
         }while(overlap);
-        System.out.println(aircraftCarrier.getType());
         this.setAircraftCarrier(aircraftCarrier);
         //Battleship
         System.out.println("Now creating a battleship, size of 4.");
@@ -217,7 +242,7 @@ public class Joueur {
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
                 startCoord = sc.nextLine();
-                System.out.println("Enter the end coordinates of you ship: ");
+                System.out.println("Enter the end coordinates of your ship: ");
                 endCoord = sc.nextLine();
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.cruiser)){
                     System.out.println("These are not correct values for the specified ship. Please try again.");
@@ -236,7 +261,7 @@ public class Joueur {
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
                 startCoord = sc.nextLine();
-                System.out.println("Enter the end coordinates of you ship: ");
+                System.out.println("Enter the end coordinates of your ship: ");
                 endCoord = sc.nextLine();
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.submarine)){
                     System.out.println("These are not correct values for the specified ship. Please try again.");
@@ -255,7 +280,7 @@ public class Joueur {
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
                 startCoord = sc.nextLine();
-                System.out.println("Enter the end coordinates of you ship: ");
+                System.out.println("Enter the end coordinates of your ship: ");
                 endCoord = sc.nextLine();
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.destroyer)){
                     System.out.println("These are not correct values for the specified ship. Please try again.");
@@ -315,17 +340,16 @@ public class Joueur {
 
     @Override
     public String toString() {
-        return "Joueur{" +
+        return "{" +
                 "name='" + name + '\'' +
                 "\n aircraftCarrier=" + aircraftCarrier +
                 "\n battleship=" + battleship +
                 "\n cruiser=" + cruiser +
                 "\n submarine=" + submarine +
                 "\n destroyer=" + destroyer +
-                "\n nbShipsLeft=" + nbShipsLeft +
-                "\n shotsFired=" + shotsFired +
-                "\n shotsReceived=" + shotsReceived +
-                "\n currentPlayer=" + currentPlayer +
+                "\n Number of ships left=" + nbShipsLeft +
+                "\n Shots fired=" + shotsFired +
+                "\n Shots received=" + shotsReceived +
                 '}';
     }
 }

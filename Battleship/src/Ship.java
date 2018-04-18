@@ -60,24 +60,24 @@ public class Ship {
     public boolean isHit(String missileCoord){ //Coordonnées de type A1, B5...
         int columnHit;
         char lineHit;
-        lineHit = missileCoord.toUpperCase().charAt(0);
-        columnHit = Integer.parseInt(missileCoord.substring(1));
-        if(startLine == endLine && startLine == lineHit) //Navire en ligne et tir sur celle-ci
-        {
-            if((columnHit >= startColumn && columnHit <= endColumn)) //Tir entre la colonne de début et la colonne de fin
+        try {
+            lineHit = missileCoord.toUpperCase().charAt(0);
+            columnHit = Integer.parseInt(missileCoord.substring(1));
+            if (startLine == endLine && startLine == lineHit) //Navire en ligne et tir sur celle-ci
             {
-                nbTimesTouched ++;
-                return true;
-            }
-        }
-        else if(startColumn == endColumn && columnHit == startColumn) //Navire en colonne et tir sur celle-ci
-        {
-            if(lineHit >= startLine && lineHit <= endLine)
+                if ((columnHit >= startColumn && columnHit <= endColumn)) //Tir entre la colonne de début et la colonne de fin
+                {
+                    nbTimesTouched++;
+                    return true;
+                }
+            } else if (startColumn == endColumn && columnHit == startColumn) //Navire en colonne et tir sur celle-ci
             {
-                nbTimesTouched ++;
-                return true;
+                if (lineHit >= startLine && lineHit <= endLine) {
+                    nbTimesTouched++;
+                    return true;
+                }
             }
-        }
+        }catch(Exception e){System.out.println("Bad coordinates");}
         return false;
     }
 
@@ -118,10 +118,12 @@ public class Ship {
 
     public Ship(String startCoord, String endCoord, ShipType type){ //On attend des coordonnées telles que A1, B5...
         nbTimesTouched = 0;
-        startLine = startCoord.toUpperCase().charAt(0);
-        startColumn = Integer.parseInt(startCoord.substring(1));
-        endLine = endCoord.toUpperCase().charAt(0);
-        endColumn = Integer.parseInt(endCoord.substring(1));
+        try {
+            startLine = startCoord.toUpperCase().charAt(0);
+            startColumn = Integer.parseInt(startCoord.substring(1));
+            endLine = endCoord.toUpperCase().charAt(0);
+            endColumn = Integer.parseInt(endCoord.substring(1));
+        }catch (Exception e){System.out.println("Bad coordinates");}
         this.type = type;
     }
 
@@ -129,19 +131,20 @@ public class Ship {
     {
        char startLine, endLine;
        int startColumn, endColumn, size = 0;
-       startLine = startCoord.toUpperCase().charAt(0);
-       endLine = endCoord.toUpperCase().charAt(0);
-       startColumn = Integer.parseInt(startCoord.substring(1));
-       endColumn = Integer.parseInt(endCoord.substring(1));
-       if(startLine<='J' && endLine<='J' && startColumn<=10 && endColumn<=10){
-           if(startColumn == endColumn){
-               size = Math.abs(startLine - endLine)+1;
+       try {
+           startLine = startCoord.toUpperCase().charAt(0);
+           endLine = endCoord.toUpperCase().charAt(0);
+           startColumn = Integer.parseInt(startCoord.substring(1));
+           endColumn = Integer.parseInt(endCoord.substring(1));
+           if (startLine <= 'J' && endLine <= 'J' && startColumn <= 10 && endColumn <= 10) {
+               if (startColumn == endColumn) {
+                   size = Math.abs(startLine - endLine) + 1;
+               } else if (Character.compare(startLine, endLine) == 0) {
+                   size = Math.abs(startColumn - endColumn) + 1;
+               }
            }
-           else if(Character.compare(startLine, endLine) == 0){
-               size = Math.abs(startColumn - endColumn)+1;
-           }
-      }
-      return size == type.getLength();
+           return size == type.getLength();
+       }catch (Exception e){return false;}
     }
 
 
