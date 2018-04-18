@@ -131,6 +131,10 @@ public class Joueur {
         this.currentPlayer = currentPlayer;
     }
 
+    public boolean isDead(){
+        return nbShipsLeft==0;
+    }
+
     public boolean receiveMissile(String missile)
     {
         if(!shotsReceived.contains(missile)) {
