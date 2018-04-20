@@ -57,20 +57,20 @@ public class Ship {
         this.nbTimesTouched = nbTimesTouched;
     }
 
-    public boolean isHit(String missileCoord){ //Coordonnées de type A1, B5...
+    public boolean isHit(String missileCoord){ //Coordinates type A1, B5...
         int columnHit;
         char lineHit;
         try {
             lineHit = missileCoord.toUpperCase().charAt(0);
             columnHit = Integer.parseInt(missileCoord.substring(1));
-            if (startLine == endLine && startLine == lineHit) //Navire en ligne et tir sur celle-ci
+            if (startLine == endLine && startLine == lineHit) //Ship in line and missile on it
             {
-                if ((columnHit >= startColumn && columnHit <= endColumn)) //Tir entre la colonne de début et la colonne de fin
+                if ((columnHit >= startColumn && columnHit <= endColumn)) //Missile btw start column and end column
                 {
                     nbTimesTouched++;
                     return true;
                 }
-            } else if (startColumn == endColumn && columnHit == startColumn) //Navire en colonne et tir sur celle-ci
+            } else if (startColumn == endColumn && columnHit == startColumn) //Ship in column and missile on it
             {
                 if (lineHit >= startLine && lineHit <= endLine) {
                     nbTimesTouched++;
@@ -82,12 +82,12 @@ public class Ship {
     }
 
     public boolean isDestroyed()
-    {
+    {//The ship is destroyed if it is touched in all its length.
         return nbTimesTouched == type.getLength();
     }
 
     public List<String>shipGrid()
-    {
+    {//Build a list containing all cases of the ship
         List<String>shipRepresentation = new ArrayList<>();
         String coordinate;
         coordinate= getStartLine() + Integer.toString(getStartColumn()) ;
@@ -128,7 +128,7 @@ public class Ship {
     }
 
     public static boolean isCorrect(String startCoord, String endCoord, ShipType type)
-    {
+    {//Used to test if the coordinates given can be applied to this type of ship
        char startLine, endLine;
        int startColumn, endColumn, size = 0;
        try {
@@ -136,7 +136,9 @@ public class Ship {
            endLine = endCoord.toUpperCase().charAt(0);
            startColumn = Integer.parseInt(startCoord.substring(1));
            endColumn = Integer.parseInt(endCoord.substring(1));
+           //testing if it's in the game grid
            if (startLine <= 'J' && endLine <= 'J' && startColumn <= 10 && endColumn <= 10) {
+               //Testing if it's in line or in column
                if (startColumn == endColumn) {
                    size = Math.abs(startLine - endLine) + 1;
                } else if (Character.compare(startLine, endLine) == 0) {

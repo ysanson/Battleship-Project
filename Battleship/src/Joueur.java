@@ -136,6 +136,7 @@ public class Joueur {
     }
 
     public void calculateShipsLeft(){
+        //Updates the number of ships left for the player
         nbShipsLeft=0;
         if(!aircraftCarrier.isDestroyed()) nbShipsLeft++;
         if(!battleship.isDestroyed()) nbShipsLeft++;
@@ -145,7 +146,7 @@ public class Joueur {
     }
 
     public boolean receiveMissile(String missile)
-    {
+    {//We first need to know if the missile has already been shot at this position. If not, we reeive it
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
             if (aircraftCarrier.isHit(missile)) {
@@ -184,7 +185,7 @@ public class Joueur {
         if(!shotsFired.contains(missile))
         {
             addShotFired(missile);
-            if(playerReceiving.receiveMissile(missile)) return 1;
+            if(playerReceiving.receiveMissile(missile)){ return 1;}
             else return 0;
         }
         else{
@@ -194,14 +195,15 @@ public class Joueur {
     }
 
     public void initialize(){
+        //Initializes the player. Perhaps more of a static method ?
         Scanner sc = new Scanner(System.in);
         String startCoord, endCoord;
         Boolean overlap;
         Ship aircraftCarrier, battleship, cruiser, submarine, destroyer;
         //Aircraft Carrier
         System.out.println("Now creating an Aircraft Carrier, size of 5.");
-        do {
-            do {
+        do {//While the ship is overlapping with another one
+            do {//While the coordinates are incorrect
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
                 startCoord = sc.nextLine();
                 System.out.println("Enter the end coordinates of your ship: ");

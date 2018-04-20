@@ -3,7 +3,7 @@ import java.util.Random;
 public class AI extends Joueur {
 
     public AI() {
-        super("T-1000");
+        super("I-401");
     }
 
     @Override
