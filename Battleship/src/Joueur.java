@@ -11,8 +11,8 @@ public class Joueur {
     private Ship submarine;
     private Ship destroyer;
     private int nbShipsLeft;
-    private List<String>shotsFired;
-    private List<String>shotsReceived;
+    private ArrayList<Coordinates>shotsFired;
+    private ArrayList<Coordinates>shotsReceived;
     private boolean currentPlayer;
 
     public String getName() {
@@ -105,20 +105,20 @@ public class Joueur {
         }
     }
 
-    public List<String> getShotsFired() {
+    public ArrayList<Coordinates> getShotsFired() {
         return shotsFired;
     }
 
-    public List<String> getShotsReceived() {
+    public ArrayList<Coordinates> getShotsReceived() {
         return shotsReceived;
     }
 
-    public void addShotFired(String coordinates)
+    public void addShotFired(Coordinates coordinates)
     {
         shotsFired.add(coordinates);
     }
 
-    public void addShotsReceived(String coordinates)
+    public void addShotsReceived(Coordinates coordinates)
     {
         shotsReceived.add(coordinates);
     }
@@ -145,27 +145,32 @@ public class Joueur {
         if(!destroyer.isDestroyed()) nbShipsLeft++;
     }
 
-    public boolean receiveMissile(String missile)
+    public boolean receiveMissile(Coordinates missile)
     {//We first need to know if the missile has already been shot at this position. If not, we reeive it
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
             if (aircraftCarrier.isHit(missile)) {
+            	aircraftCarrier.damageShip(missile);
                 if(aircraftCarrier.isDestroyed())
                     System.out.println("Aircraft Carrier sunk!");
                 return true;
             } else if (battleship.isHit(missile)) {
+            	battleship.damageShip(missile);
                 if(battleship.isDestroyed())
                     System.out.println("Battleship sunk!");
                 return true;
             } else if (cruiser.isHit(missile)) {
+            	cruiser.damageShip(missile);
                 if(cruiser.isDestroyed())
                     System.out.println("Cruiser sunk!");
                 return true;
             } else if (destroyer.isHit(missile)) {
+            	destroyer.damageShip(missile);
                 if(destroyer.isDestroyed())
                     System.out.println("Destroyer sunk!");
                 return true;
             } else if (submarine.isHit(missile)) {
+            	submarine.damageShip(missile);
                 if(submarine.isDestroyed())
                     System.out.println("Submarine sunk!");
                 return true;
@@ -180,7 +185,7 @@ public class Joueur {
         }
     }
 
-    public int sendMissile(String missile, Joueur playerReceiving)
+    public int sendMissile(Coordinates missile, Joueur playerReceiving)
     {
         if(!shotsFired.contains(missile))
         {
@@ -197,7 +202,8 @@ public class Joueur {
     public void initialize(){
         //Initializes the player. Perhaps more of a static method ?
         Scanner sc = new Scanner(System.in);
-        String startCoord, endCoord;
+        String sCoord, eCoord;
+        Coordinates startCoord = null, endCoord = null;
         Boolean overlap;
         Ship aircraftCarrier, battleship, cruiser, submarine, destroyer;
         //Aircraft Carrier
@@ -205,9 +211,16 @@ public class Joueur {
         do {//While the ship is overlapping with another one
             do {//While the coordinates are incorrect
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
-                startCoord = sc.nextLine();
+                sCoord = sc.nextLine();
                 System.out.println("Enter the end coordinates of your ship: ");
-                endCoord = sc.nextLine();
+                eCoord = sc.nextLine();
+                if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
+                	startCoord = new Coordinates(sCoord);
+                	endCoord = new Coordinates(sc.nextLine());
+                }
+                else{
+                	System.out.println("These are bad coordinates.");
+                }
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.aircraftCarrier)){
                     System.out.println("This are not correct values for the specified ship. Please try again.");
                 }
@@ -225,9 +238,19 @@ public class Joueur {
         do{
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
-                startCoord = sc.nextLine();
+                sCoord = sc.nextLine();
                 System.out.println("Enter the end coordinates of your ship: ");
-                endCoord = sc.nextLine();
+                eCoord = sc.nextLine();
+                if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
+                	startCoord = new Coordinates(sCoord);
+                	endCoord = new Coordinates(sc.nextLine());
+                }
+                else{
+                	System.out.println("These are bad coordinates.");
+                }
+                if(!Ship.isCorrect(startCoord, endCoord, ShipType.battleship)){
+                    System.out.println("This are not correct values for the specified ship. Please try again.");
+                }
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.battleship)){
                     System.out.println("These are not correct values for the specified ship. Please try again.");
                 }
@@ -244,11 +267,18 @@ public class Joueur {
         do{
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
-                startCoord = sc.nextLine();
+                sCoord = sc.nextLine();
                 System.out.println("Enter the end coordinates of your ship: ");
-                endCoord = sc.nextLine();
+                eCoord = sc.nextLine();
+                if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
+                	startCoord = new Coordinates(sCoord);
+                	endCoord = new Coordinates(sc.nextLine());
+                }
+                else{
+                	System.out.println("These are bad coordinates.");
+                }
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.cruiser)){
-                    System.out.println("These are not correct values for the specified ship. Please try again.");
+                    System.out.println("This are not correct values for the specified ship. Please try again.");
                 }
             }while(!Ship.isCorrect(startCoord, endCoord, ShipType.cruiser));
             cruiser = new Ship(startCoord, endCoord, ShipType.cruiser);
@@ -263,11 +293,18 @@ public class Joueur {
         do{
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
-                startCoord = sc.nextLine();
+                sCoord = sc.nextLine();
                 System.out.println("Enter the end coordinates of your ship: ");
-                endCoord = sc.nextLine();
+                eCoord = sc.nextLine();
+                if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
+                	startCoord = new Coordinates(sCoord);
+                	endCoord = new Coordinates(sc.nextLine());
+                }
+                else{
+                	System.out.println("These are bad coordinates.");
+                }
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.submarine)){
-                    System.out.println("These are not correct values for the specified ship. Please try again.");
+                    System.out.println("This are not correct values for the specified ship. Please try again.");
                 }
             }while (!Ship.isCorrect(startCoord, endCoord, ShipType.submarine));
             submarine = new Ship(startCoord, endCoord, ShipType.submarine);
@@ -282,11 +319,18 @@ public class Joueur {
         do{
             do{
                 System.out.println("Enter the start coordinate of your ship (eg. A1, B5, etc.): ");
-                startCoord = sc.nextLine();
+                sCoord = sc.nextLine();
                 System.out.println("Enter the end coordinates of your ship: ");
-                endCoord = sc.nextLine();
+                eCoord = sc.nextLine();
+                if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
+                	startCoord = new Coordinates(sCoord);
+                	endCoord = new Coordinates(sc.nextLine());
+                }
+                else{
+                	System.out.println("These are bad coordinates.");
+                }
                 if(!Ship.isCorrect(startCoord, endCoord, ShipType.destroyer)){
-                    System.out.println("These are not correct values for the specified ship. Please try again.");
+                    System.out.println("This are not correct values for the specified ship. Please try again.");
                 }
             }while(!Ship.isCorrect(startCoord, endCoord, ShipType.destroyer));
             destroyer = new Ship(startCoord, endCoord, ShipType.destroyer);
@@ -297,6 +341,7 @@ public class Joueur {
         }while (overlap);
         setDestroyer(destroyer);
         System.out.println("Completed !");
+        sc.close();
     }
 
     public Joueur(String name) {
@@ -311,7 +356,7 @@ public class Joueur {
         ArrayList<String> shipRepresentation = new ArrayList<>(ship.shipGrid()); //So we don't have to recalculate it 5 times
         //Collections.disjoint throws an exception when empty. So if all the ships haven't been initialized yet, we have to do these try and catch
         try {
-            overlap = !Collections.disjoint(shipRepresentation, player.getAircraftCarrier().shipGrid()); //testing if the ship is overlapping with the carrier
+        	overlap = !Collections.disjoint(shipRepresentation, player.getAircraftCarrier().shipGrid()); //testing if the ship is overlapping with the carrier
             if(overlap) return true;
             else {
                 try{

@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class Ship {
-    private char startLine, endLine;
-    private int startColumn, endColumn;
+    private Coordinates startCoord, endCoord;
     private int nbTimesTouched;
+    private ArrayList<Coordinates>positionsTouched;
     private ShipType type;
 
     public ShipType getType() {
@@ -17,38 +17,6 @@ public class Ship {
         this.type = type;
     }
 
-    public char getStartLine() {
-        return startLine;
-    }
-
-    public void setStartLine(char startLine) {
-        this.startLine = startLine;
-    }
-
-    public char getEndLine() {
-        return endLine;
-    }
-
-    public void setEndLine(char endLine) {
-        this.endLine = endLine;
-    }
-
-    public int getStartColumn() {
-        return startColumn;
-    }
-
-    public void setStartColumn(int startColumn) {
-        this.startColumn = startColumn;
-    }
-
-    public int getEndColumn() {
-        return endColumn;
-    }
-
-    public void setEndColumn(int endColumn) {
-        this.endColumn = endColumn;
-    }
-
     public int getNbTimesTouched() {
         return nbTimesTouched;
     }
@@ -57,29 +25,55 @@ public class Ship {
         this.nbTimesTouched = nbTimesTouched;
     }
 
-    public boolean isHit(String missileCoord){ //Coordinates type A1, B5...
-        int columnHit;
-        char lineHit;
-        try {
-            lineHit = missileCoord.toUpperCase().charAt(0);
-            columnHit = Integer.parseInt(missileCoord.substring(1));
-            if (startLine == endLine && startLine == lineHit) //Ship in line and missile on it
-            {
-                if ((columnHit >= startColumn && columnHit <= endColumn)) //Missile btw start column and end column
-                {
-                    nbTimesTouched++;
-                    return true;
-                }
-            } else if (startColumn == endColumn && columnHit == startColumn) //Ship in column and missile on it
-            {
-                if (lineHit >= startLine && lineHit <= endLine) {
-                    nbTimesTouched++;
-                    return true;
-                }
-            }
-        }catch(Exception e){System.out.println("Bad coordinates");}
-        return false;
+    public Coordinates getStartCoord() {
+		return startCoord;
+	}
+
+	public void setStartCoord(Coordinates startCoord) {
+		this.startCoord = startCoord;
+	}
+
+	public Coordinates getEndCoord() {
+		return endCoord;
+	}
+
+	public void setEndCoord(Coordinates endCoord) {
+		this.endCoord = endCoord;
+	}
+
+	public ArrayList<Coordinates> getPositionsTouched() {
+		return positionsTouched;
+	}
+
+	public void setPositionsTouched(ArrayList<Coordinates> positionsTouched) {
+		this.positionsTouched = positionsTouched;
+	}
+
+	public boolean isHit(Coordinates missileCoord){ //Coordinates type A1, B5...
+		if(!positionsTouched.contains(missileCoord)){
+			if (startCoord.getLine() == endCoord.getLine() && startCoord.getLine() == missileCoord.getLine()) //Ship in line and missile on it
+			{
+			    if ((missileCoord.getColumn() >= startCoord.getColumn() && missileCoord.getColumn() <= endCoord.getColumn())) //Missile btw start column and end column
+			    {
+			        return true;
+			    }
+			}else if (startCoord.getColumn() == endCoord.getColumn() && missileCoord.getColumn() == startCoord.getColumn()) //Ship in column and missile on it
+			{
+		        if (missileCoord.getLine() >= startCoord.getLine() && missileCoord.getLine() <= endCoord.getLine()) {
+		            return true;
+		        }
+			}
+		}
+		else{
+			System.out.println("Missile already shot on this part of the ship!");
+		}
+		return false;
     }
+	
+	public void damageShip(Coordinates missileCoord){
+		nbTimesTouched++;
+		positionsTouched.add(missileCoord);
+	}
 
     public boolean isDestroyed()
     {//The ship is destroyed if it is touched in all its length.
@@ -90,22 +84,22 @@ public class Ship {
     {//Build a list containing all cases of the ship
         List<String>shipRepresentation = new ArrayList<>();
         String coordinate;
-        coordinate= getStartLine() + Integer.toString(getStartColumn()) ;
-        char line = getStartLine();
-        int column = getStartColumn();
+        coordinate= startCoord.toString();
+        char line = startCoord.getLine();
+        int column = startCoord.getColumn();
         shipRepresentation.add(coordinate);
-        if(getStartColumn() == getEndColumn())
+        if(startCoord.getColumn() == endCoord.getColumn())
         {
-            while(line < getEndLine())
+            while(line < endCoord.getLine())
             {
                 line ++;
-                coordinate = line + Integer.toString(getStartColumn());
+                coordinate = line + Integer.toString(column);
                 shipRepresentation.add(coordinate);
             }
         }
         else
         {
-            while(column < getEndColumn())
+            while(column < endCoord.getColumn())
             {
                 column++;
                 coordinate = line + Integer.toString(column);
@@ -116,37 +110,28 @@ public class Ship {
     }
 
 
-    public Ship(String startCoord, String endCoord, ShipType type){ //Waiting for coordinates like A1, B5...
+    public Ship(Coordinates startCoord, Coordinates endCoord, ShipType type){ //Waiting for coordinates like A1, B5...
         nbTimesTouched = 0;
-        try {
-            startLine = startCoord.toUpperCase().charAt(0);
-            startColumn = Integer.parseInt(startCoord.substring(1));
-            endLine = endCoord.toUpperCase().charAt(0);
-            endColumn = Integer.parseInt(endCoord.substring(1));
-        }catch (Exception e){System.out.println("Bad coordinates");}
+        positionsTouched = new ArrayList<Coordinates>();
+        this.startCoord = startCoord;
+        this.endCoord = endCoord;
         this.type = type;
+        
     }
 
-    public static boolean isCorrect(String startCoord, String endCoord, ShipType type)
+    public static boolean isCorrect(Coordinates startCoord, Coordinates endCoord, ShipType type)
     {//Used to test if the coordinates given can be applied to this type of ship
-       char startLine, endLine;
-       int startColumn, endColumn, size = 0;
-       try {
-           startLine = startCoord.toUpperCase().charAt(0);
-           endLine = endCoord.toUpperCase().charAt(0);
-           startColumn = Integer.parseInt(startCoord.substring(1));
-           endColumn = Integer.parseInt(endCoord.substring(1));
-           //testing if it's in the game grid
-           if (startLine <= 'J' && endLine <= 'J' && startColumn <= 10 && endColumn <= 10) {
-               //Testing if it's in line or in column
-               if (startColumn == endColumn) {
-                   size = Math.abs(startLine - endLine) + 1;
-               } else if (Character.compare(startLine, endLine) == 0) {
-                   size = Math.abs(startColumn - endColumn) + 1;
-               }
+       int size = 0;
+       //testing if it's in the game grid
+       if (startCoord.getLine() <= 'J' && endCoord.getLine() <= 'J' && startCoord.getColumn() <= 10 && endCoord.getColumn() <= 10) {
+           //Testing if it's in line or in column
+           if (startCoord.getColumn() == endCoord.getColumn()) {
+               size = Math.abs(startCoord.getLine() - endCoord.getLine()) + 1;
+           } else if (startCoord.getLine() == endCoord.getLine()) {
+               size = Math.abs(startCoord.getColumn() - endCoord.getColumn()) + 1;
            }
-           return size == type.getLength();
-       }catch (Exception e){return false;}
+       }
+       return size == type.getLength();
     }
 
 
@@ -157,11 +142,9 @@ public class Ship {
         output.append(" Length : ");
         output.append(type.getLength());
         output.append(" [start : ");
-        output.append(startLine);
-        output.append(startColumn);
+        output.append(startCoord.toString());
         output.append(" Finish : ");
-        output.append(endLine);
-        output.append(endColumn);
+        output.append(endCoord.toString());
         output.append("] ");
         output.append("Number of times touched : ");
         output.append(nbTimesTouched);

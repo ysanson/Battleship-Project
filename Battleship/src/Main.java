@@ -1,12 +1,13 @@
+
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
     public static void main(String[] args)
     {
         Scanner sc = new Scanner(System.in);
-        String name, missileCoordinate;
+        String name;
+        Coordinates missileCoordinate;
         System.out.println("Player 1, enter your name: ");
         name = sc.nextLine();
         Joueur j1 = new Joueur(name);
@@ -21,7 +22,7 @@ public class Main {
             System.out.println("Get ready " + game.getCurrentPlayer().getName()+"!");
             do {
                 System.out.println("Enter a missile coordinate: ");
-                missileCoordinate = sc.nextLine();
+                missileCoordinate = new Coordinates(sc.nextLine());
                 hasHit = game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
                 if (hasHit == 1) {
                     System.out.println("Your missile touched the opponent ! Continue like this !");
@@ -35,6 +36,6 @@ public class Main {
         }
         System.out.println("Game is over!");
         System.out.println("Congratulations " + game.whoWon().getName() + ", you win with " + game.whoWon().getNbShipsLeft() + " ships left!");
-
+        sc.close();
     }
 }
