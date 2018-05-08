@@ -105,19 +105,21 @@ public class AI extends Joueur {
     }
 
     public Coordinates calculateMissile(){
-      Coordinates missileCoord = randomCoord();
-      if(lastMissileTouched && !getShotsFired().isEmpty()){ //If the last missile touched a ship, we should try to shoot around
-          missileCoord = getShotsFired().get(getShotsFired().size()-1);
-          char missileLine = missileCoord.getLine();
-          int missileColumn=missileCoord.getColumn();
-          String upperShot = (missileLine-1)+Integer.toString(missileColumn);
-          if(Coordinates.isCorrect(upperShot)){
+        Coordinates missileCoord = randomCoord();
+        while(getShotsFired().contains(missileCoord)){
+            missileCoord = randomCoord();
+        }
+
+        if(lastMissileTouched && !getShotsFired().isEmpty()){ //If the last missile touched a ship, we should try to shoot around
+            missileCoord = getShotsFired().get(getShotsFired().size()-1);
+            char missileLine = missileCoord.getLine();
+            int missileColumn=missileCoord.getColumn();
+            String upperShot = (missileLine-1)+Integer.toString(missileColumn);
+            if(Coordinates.isCorrect(upperShot)){
               Coordinates up = new Coordinates(upperShot);
-          }
-
-
-      }
-      return missileCoord;
+            }
+        }
+        return missileCoord;
     }
     
 
