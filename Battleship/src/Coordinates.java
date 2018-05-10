@@ -38,7 +38,7 @@ public class Coordinates {
 		try{
 			line=coord.toUpperCase().charAt(0);
 			column=Integer.parseInt(coord.substring(1));
-			if(line<'A' && column<1)
+			if(line>='A' && column>=1)
 				return true;
 		}catch(Exception e){
 			System.out.println("Bad coordinates");

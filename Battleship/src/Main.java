@@ -2,19 +2,28 @@
 import java.util.Scanner;
 
 public class Main {
+    static boolean iaBattle;
 
     public static void main(String[] args)
     {
+        iaBattle=true;
+        Game game;
         Scanner sc = new Scanner(System.in);
         String name;
         Coordinates missileCoordinate;
         System.out.println("Player 1, enter your name: ");
         name = sc.nextLine();
         Joueur j1 = new Joueur(name);
-        System.out.println("Player 2, enter your name: ");
-        name = sc.nextLine();
-        Joueur j2 = new Joueur(name);
-        Game game = new Game(j1, j2);
+        if(iaBattle){
+            AI ai = new AI(2);
+            game = new Game(j1, ai);
+        }
+        else {
+            System.out.println("Player 2, enter your name: ");
+            name = sc.nextLine();
+            Joueur j2 = new Joueur(name);
+            game = new Game(j1, j2);
+        }
         game.initialize();
         int hasHit;
 

@@ -2,10 +2,12 @@ import java.util.Random;
 
 public class AI extends Joueur {
     private boolean lastMissileTouched;
+    private int level;
 
-    public AI() {
+    public AI(int level) {
         super("I-401");
         lastMissileTouched=false;
+        this.level=level;
     }
 
     @Override
@@ -106,17 +108,20 @@ public class AI extends Joueur {
 
     public Coordinates calculateMissile(){
         Coordinates missileCoord = randomCoord();
-        while(getShotsFired().contains(missileCoord)){
-            missileCoord = randomCoord();
+        if(level==2) {
+            while (getShotsFired().contains(missileCoord)) {
+                missileCoord = randomCoord();
+            }
         }
-
-        if(lastMissileTouched && !getShotsFired().isEmpty()){ //If the last missile touched a ship, we should try to shoot around
-            missileCoord = getShotsFired().get(getShotsFired().size()-1);
-            char missileLine = missileCoord.getLine();
-            int missileColumn=missileCoord.getColumn();
-            String upperShot = (missileLine-1)+Integer.toString(missileColumn);
-            if(Coordinates.isCorrect(upperShot)){
-              Coordinates up = new Coordinates(upperShot);
+        else if(level==3) {
+            if (lastMissileTouched && !getShotsFired().isEmpty()) { //If the last missile touched a ship, we should try to shoot around
+                missileCoord = getShotsFired().get(getShotsFired().size() - 1);
+                char missileLine = missileCoord.getLine();
+                int missileColumn = missileCoord.getColumn();
+                String upperShot = (missileLine - 1) + Integer.toString(missileColumn);
+                if (Coordinates.isCorrect(upperShot)) {
+                    Coordinates up = new Coordinates(upperShot);
+                }
             }
         }
         return missileCoord;

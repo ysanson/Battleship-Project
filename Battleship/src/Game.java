@@ -32,11 +32,23 @@ public class Game {
         nbTurns = 0;
     }
 
+    public Game(Joueur player, AI ai){
+        this.player1=player;
+        this.player2=ai;
+        nbTurns=0;
+    }
+
     public void initialize(){
         System.out.println("Now initializing player 1 : " + player1.getName());
         player1.initialize();
-        System.out.println("Now initializing player 2 : " + player2.getName());
+        if(!(player2 instanceof AI)){
+            System.out.println("Now initializing player 2 : " + player2.getName());
+        }
+        else{
+            System.out.println("Now initializing AI...");
+        }
         player2.initialize();
+
         System.out.println("Starting with player 1.");
         player1.setCurrentPlayer(true);
         player2.setCurrentPlayer(false);
