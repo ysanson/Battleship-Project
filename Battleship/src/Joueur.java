@@ -145,43 +145,58 @@ public class Joueur {
         if(!destroyer.isDestroyed()) nbShipsLeft++;
     }
 
-    public boolean receiveMissile(Coordinates missile)
+    public HitType receiveMissile(Coordinates missile)
     {//We first need to know if the missile has already been shot at this position. If not, we reeive it
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
             if (aircraftCarrier.isHit(missile)) {
             	aircraftCarrier.damageShip(missile);
-                if(aircraftCarrier.isDestroyed())
+                if(aircraftCarrier.isDestroyed()){
                     System.out.println("Aircraft Carrier sunk!");
-                return true;
+                    return HitType.Sank;
+                }
+                System.out.println("Aircraft Carrier damaged");
+                return HitType.Hit;
             } else if (battleship.isHit(missile)) {
             	battleship.damageShip(missile);
-                if(battleship.isDestroyed())
+                if(battleship.isDestroyed()){
                     System.out.println("Battleship sunk!");
-                return true;
+                    return HitType.Sank;
+                }
+                System.out.println("Battleship damaged");
+                return HitType.Hit;
             } else if (cruiser.isHit(missile)) {
             	cruiser.damageShip(missile);
-                if(cruiser.isDestroyed())
+                if(cruiser.isDestroyed()){
                     System.out.println("Cruiser sunk!");
-                return true;
+                    return HitType.Sank;
+                }
+                System.out.println("Cruiser damaged");
+                return HitType.Hit;
             } else if (destroyer.isHit(missile)) {
             	destroyer.damageShip(missile);
-                if(destroyer.isDestroyed())
+                if(destroyer.isDestroyed()){
                     System.out.println("Destroyer sunk!");
-                return true;
+                    return HitType.Sank;
+                }
+                System.out.println("Destroyer damaged");
+                return HitType.Hit;
             } else if (submarine.isHit(missile)) {
             	submarine.damageShip(missile);
-                if(submarine.isDestroyed())
+                if(submarine.isDestroyed()){
                     System.out.println("Submarine sunk!");
-                return true;
+                    return HitType.Sank;
+                }
+                System.out.println("Submarine damaged");
+                return HitType.Hit;
             } else {
-                return false;
+                return HitType.Miss;
             }
         }
         else
         {
             System.out.println("Missile already shot on this position");
-            return false;
+            return HitType.Hit;
         }
     }
 
@@ -190,8 +205,7 @@ public class Joueur {
         if(!shotsFired.contains(missile))
         {
             addShotFired(missile);
-            if(playerReceiving.receiveMissile(missile)){ return 1;}
-            else return 0;
+            return playerReceiving.receiveMissile(missile).getLevel();
         }
         else{
             System.out.println("Missile already fired on this position");
@@ -199,9 +213,8 @@ public class Joueur {
         }
     }
 
-    public void initialize(){
+    public void initialize(Scanner sc){
         //Initializes the player. Perhaps more of a static method ?
-        Scanner sc = new Scanner(System.in);
         String sCoord, eCoord;
         Coordinates startCoord = null, endCoord = null;
         Boolean overlap;
@@ -216,7 +229,7 @@ public class Joueur {
                 eCoord = sc.nextLine();
                 if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
                 	startCoord = new Coordinates(sCoord);
-                	endCoord = new Coordinates(sc.nextLine());
+                	endCoord = new Coordinates(eCoord);
                 }
                 else{
                 	System.out.println("These are bad coordinates.");
@@ -243,7 +256,7 @@ public class Joueur {
                 eCoord = sc.nextLine();
                 if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
                 	startCoord = new Coordinates(sCoord);
-                	endCoord = new Coordinates(sc.nextLine());
+                	endCoord = new Coordinates(eCoord);
                 }
                 else{
                 	System.out.println("These are bad coordinates.");
@@ -272,7 +285,7 @@ public class Joueur {
                 eCoord = sc.nextLine();
                 if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
                 	startCoord = new Coordinates(sCoord);
-                	endCoord = new Coordinates(sc.nextLine());
+                	endCoord = new Coordinates(eCoord);
                 }
                 else{
                 	System.out.println("These are bad coordinates.");
@@ -298,7 +311,7 @@ public class Joueur {
                 eCoord = sc.nextLine();
                 if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
                 	startCoord = new Coordinates(sCoord);
-                	endCoord = new Coordinates(sc.nextLine());
+                	endCoord = new Coordinates(eCoord);
                 }
                 else{
                 	System.out.println("These are bad coordinates.");
@@ -324,7 +337,7 @@ public class Joueur {
                 eCoord = sc.nextLine();
                 if(Coordinates.isCorrect(sCoord)&&Coordinates.isCorrect(eCoord)){
                 	startCoord = new Coordinates(sCoord);
-                	endCoord = new Coordinates(sc.nextLine());
+                	endCoord = new Coordinates(eCoord);
                 }
                 else{
                 	System.out.println("These are bad coordinates.");
@@ -341,7 +354,6 @@ public class Joueur {
         }while (overlap);
         setDestroyer(destroyer);
         System.out.println("Completed !");
-        sc.close();
     }
 
     public Joueur(String name) {

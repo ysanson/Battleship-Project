@@ -1,17 +1,23 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class AI extends Joueur {
     private boolean lastMissileTouched;
     private int level;
+    private ArrayList<Coordinates> shotsTouched;
+    private boolean isSunk;
 
     public AI(int level) {
         super("I-401");
-        lastMissileTouched=false;
         this.level=level;
+        shotsTouched = new ArrayList<Coordinates>();
+        isSunk=false;
     }
 
     @Override
-    public void initialize(){
+    public void initialize(Scanner sc){
     	Coordinates startCoord=null, endCoord=null;
     	Ship ship;
     	//Aircraft Carrier first
@@ -61,7 +67,19 @@ public class AI extends Joueur {
     }
 
     public int sendMissile(Coordinates missile, Joueur playerReceiving){
-        return super.sendMissile(missile, playerReceiving);
+        //Coordinates missileToSend = this.calculateMissile();
+        int hasHit =  super.sendMissile(missile, playerReceiving);
+        if(hasHit==2){
+            shotsTouched.add(missile);
+            isSunk=true;
+        }
+        else if(hasHit==1) {
+            shotsTouched.add(missile);
+            isSunk=false;
+        }
+        else
+            isSunk=false;
+        return hasHit;
     }
 
     public Coordinates randomCoord(){
@@ -114,7 +132,7 @@ public class AI extends Joueur {
             }
         }
         else if(level==3) {
-            if (lastMissileTouched && !getShotsFired().isEmpty()) { //If the last missile touched a ship, we should try to shoot around
+            /*if (lastMissileTouched && !getShotsFired().isEmpty()) { //If the last missile touched a ship, we should try to shoot around
                 missileCoord = getShotsFired().get(getShotsFired().size() - 1);
                 char missileLine = missileCoord.getLine();
                 int missileColumn = missileCoord.getColumn();
@@ -122,7 +140,7 @@ public class AI extends Joueur {
                 if (Coordinates.isCorrect(upperShot)) {
                     Coordinates up = new Coordinates(upperShot);
                 }
-            }
+            }*/
         }
         return missileCoord;
     }

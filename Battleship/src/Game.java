@@ -1,3 +1,4 @@
+import java.util.Scanner;
 public class Game {
     private Joueur player1, player2;
     private int nbTurns;
@@ -38,16 +39,16 @@ public class Game {
         nbTurns=0;
     }
 
-    public void initialize(){
+    public void initialize(Scanner sc){
         System.out.println("Now initializing player 1 : " + player1.getName());
-        player1.initialize();
+        player1.initialize(sc);
         if(!(player2 instanceof AI)){
             System.out.println("Now initializing player 2 : " + player2.getName());
         }
         else{
             System.out.println("Now initializing AI...");
         }
-        player2.initialize();
+        player2.initialize(sc);
 
         System.out.println("Starting with player 1.");
         player1.setCurrentPlayer(true);
