@@ -18,7 +18,7 @@ public class Main {
         Joueur j1 = new Joueur(name);
 
         if(iaBattle){
-            AI ai = new AI(2);
+            AI ai = new AI(3);
             game = new Game(j1, ai);
         }
         else {
@@ -33,6 +33,7 @@ public class Main {
             if(!(game.getCurrentPlayer() instanceof AI)) {
                 System.out.println("Get ready " + game.getCurrentPlayer().getName() + "!");
                 do {
+                    hasHit=-1;
                     System.out.println("Enter a missile coordinate: ");
                     coord = sc.nextLine();
                     if(Coordinates.isCorrect(coord)) {
@@ -51,6 +52,7 @@ public class Main {
             else{
                 System.out.println("AI's turn!");
                 do{
+                    hasHit=-1;
                     missileCoordinate = ((AI) game.getCurrentPlayer()).calculateMissile();
                     System.out.println("The AI shoots at the coordinate " + missileCoordinate);
                     hasHit=((AI)game.getCurrentPlayer()).sendMissile(missileCoordinate, game.getPassivePlayer());
@@ -65,7 +67,7 @@ public class Main {
 
             if(game.newTurn()) {
                 try { //To improve console readability
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Thread.currentThread().interrupt();

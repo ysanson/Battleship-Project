@@ -112,7 +112,7 @@ public class Ship {
 
     public Ship(Coordinates startCoord, Coordinates endCoord, ShipType type){ //Waiting for coordinates like A1, B5...
         nbTimesTouched = 0;
-        positionsTouched = new ArrayList<Coordinates>();
+        positionsTouched = new ArrayList<>();
         this.startCoord = startCoord;
         this.endCoord = endCoord;
         this.type = type;

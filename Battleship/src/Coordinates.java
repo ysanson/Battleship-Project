@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Coordinates {
 	//Usable with coordinates like A...Z1... 
@@ -8,7 +10,6 @@ public class Coordinates {
 	public char getLine() {
 		return line;
 	}
-
 
 	public void setLine(char line) {
 		this.line = line;
@@ -31,6 +32,67 @@ public class Coordinates {
 		line=coord.toUpperCase().charAt(0);
 		column=Integer.parseInt(coord.substring(1));
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordinates that = (Coordinates) o;
+
+        if (getLine() != that.getLine()) return false;
+        return getColumn() == that.getColumn();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) getLine();
+        result = 31 * result + getColumn();
+        return result;
+    }
+
+    public ArrayList<Coordinates>findNeighbors(){
+	    ArrayList<Coordinates> neighbors = new ArrayList<>();
+	    Coordinates up = new Coordinates((char)(this.getLine()-1), this.getColumn());
+	    Coordinates down = new Coordinates((char)(this.getLine()+1), this.getColumn());
+	    Coordinates left = new Coordinates(this.getLine(), this.getColumn()-1);
+	    Coordinates right = new Coordinates(this.getLine(), this.getColumn()+1);
+	    if(up.isCorrect())
+	        neighbors.add(up);
+	    if(down.isCorrect())
+	        neighbors.add(down);
+	    if(left.isCorrect())
+	        neighbors.add(left);
+	    if(right.isCorrect())
+	        neighbors.add(right);
+        return neighbors;
+    }
+
+    public ArrayList<Coordinates>findNeighborsInline(){
+	    ArrayList<Coordinates> neighbors = new ArrayList<>();
+	    Coordinates left = new Coordinates(this.getLine(), this.getColumn()-1);
+	    Coordinates right = new Coordinates(this.getLine(), this.getColumn()+1);
+        if(left.isCorrect())
+            neighbors.add(left);
+        if(right.isCorrect())
+            neighbors.add(right);
+        return neighbors;
+    }
+
+    public ArrayList<Coordinates>findNeighborsInColumn(){
+        ArrayList<Coordinates> neighbors = new ArrayList<>();
+        Coordinates up = new Coordinates((char)(this.getLine()-1), this.getColumn());
+        Coordinates down = new Coordinates((char)(this.getLine()+1), this.getColumn());
+        if(up.isCorrect())
+            neighbors.add(up);
+        if(down.isCorrect())
+            neighbors.add(down);
+        return neighbors;
+    }
+
+    public boolean isCorrect(){
+	    return line>='A' && line<='J' && column>=1 && column<=10;
+    }
     
 	public static boolean isCorrect(String coord){
 		char line;
@@ -38,8 +100,7 @@ public class Coordinates {
 		try{
 			line=coord.toUpperCase().charAt(0);
 			column=Integer.parseInt(coord.substring(1));
-			if(line>='A' && column>=1)
-				return true;
+            return line>='A' && line<='J' && column>=1 && column<=10;
 		}catch(Exception e){
 			System.out.println("Bad coordinates");
 		}

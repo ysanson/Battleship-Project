@@ -202,14 +202,12 @@ public class Joueur {
 
     public int sendMissile(Coordinates missile, Joueur playerReceiving)
     {
-        if(!shotsFired.contains(missile))
-        {
-            addShotFired(missile);
-            return playerReceiving.receiveMissile(missile).getLevel();
-        }
-        else{
+        if (shotsFired.contains(missile)) {
             System.out.println("Missile already fired on this position");
             return -1;
+        } else {
+            addShotFired(missile);
+            return playerReceiving.receiveMissile(missile).getLevel();
         }
     }
 

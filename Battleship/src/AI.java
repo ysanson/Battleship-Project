@@ -1,19 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class AI extends Joueur {
-    private boolean lastMissileTouched;
     private int level;
     private ArrayList<Coordinates> shotsTouched;
-    private boolean isSunk;
+    private boolean isSunk, isHit;
 
     public AI(int level) {
         super("I-401");
         this.level=level;
         shotsTouched = new ArrayList<Coordinates>();
         isSunk=false;
+        isHit=false;
     }
 
     @Override
@@ -67,18 +64,22 @@ public class AI extends Joueur {
     }
 
     public int sendMissile(Coordinates missile, Joueur playerReceiving){
-        //Coordinates missileToSend = this.calculateMissile();
         int hasHit =  super.sendMissile(missile, playerReceiving);
         if(hasHit==2){
             shotsTouched.add(missile);
             isSunk=true;
+            isHit=true;
         }
         else if(hasHit==1) {
             shotsTouched.add(missile);
             isSunk=false;
+            isHit=true;
         }
-        else
+        else{
             isSunk=false;
+            isHit=false;
+        }
+
         return hasHit;
     }
 
@@ -132,18 +133,62 @@ public class AI extends Joueur {
             }
         }
         else if(level==3) {
-            /*if (lastMissileTouched && !getShotsFired().isEmpty()) { //If the last missile touched a ship, we should try to shoot around
-                missileCoord = getShotsFired().get(getShotsFired().size() - 1);
-                char missileLine = missileCoord.getLine();
-                int missileColumn = missileCoord.getColumn();
-                String upperShot = (missileLine - 1) + Integer.toString(missileColumn);
-                if (Coordinates.isCorrect(upperShot)) {
-                    Coordinates up = new Coordinates(upperShot);
+            Random r = new Random();
+            int randPos=0;
+
+            if(!shotsTouched.isEmpty()) { //Must have at least one shot touched and one shot fired
+                if(!isSunk && isHit && lastTwoHitsAreNeighbors()){
+                    //The ship is not sunk, we hit something and the last 2 missiles are either on the same line or same column
+                    if(shotsTouched.get(shotsTouched.size()-1).getLine()==shotsTouched.get(shotsTouched.size()-2).getLine()){
+                        //Last 2 missiles touched the same line, so we search on it
+                        ArrayList<Coordinates> lineNeighbors=shotsTouched.get(shotsTouched.size()-1).findNeighborsInline();
+                        lineNeighbors.removeIf(c->getShotsFired().contains(c)); //It will remove the second last shot touched.
+                        if(!lineNeighbors.isEmpty()){ //neighbors will contains either one or zero coordinates
+                            System.out.println("Next shot in line");
+                            if(lineNeighbors.size()==1)
+                                return lineNeighbors.get(0);
+                        }
+                    }
+                    else{
+                        ArrayList<Coordinates>columnNeighbors=shotsTouched.get(shotsTouched.size()-1).findNeighborsInColumn();
+                        columnNeighbors.removeIf(c->getShotsFired().contains(c));
+                        if(!columnNeighbors.isEmpty()){
+                            System.out.println("Next shot in column");
+                            if(columnNeighbors.size()==1)
+                                return columnNeighbors.get(0);
+                        }
+                    }
                 }
-            }*/
+                if(!isSunk) {
+                    //The ship is not sunk, and we hit something
+                    ArrayList<Coordinates> neighbors = shotsTouched.get(shotsTouched.size() - 1).findNeighbors();
+                    //If we already shot in some of the neighbors, we remove them
+                    neighbors.removeIf(c -> getShotsFired().contains(c));
+                    if (!neighbors.isEmpty()) {
+                        do {
+                            randPos = r.nextInt(neighbors.size());
+                            missileCoord = neighbors.get(randPos);
+                            System.out.println("Neighbor found : " + missileCoord);
+                        }
+                        while (getShotsFired().contains(missileCoord)); //One of the coordinates is not yet touched : we loop until we find it
+                        return missileCoord;
+                    }
+                }
+            }
+            //If didn't shot, if neighbors are already shot, we fall back to default search
+            while (getShotsFired().contains(missileCoord)) {
+                missileCoord = randomCoord();
+            }
+
         }
         return missileCoord;
     }
-    
 
+    public boolean lastTwoHitsAreNeighbors(){
+        if(shotsTouched.size()>1) {
+            ArrayList<Coordinates> neighbors = shotsTouched.get(shotsTouched.size() - 1).findNeighbors();
+            return neighbors.contains(shotsTouched.get(shotsTouched.size() - 2));
+        }
+        return false;
+    }
 }
