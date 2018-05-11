@@ -2,23 +2,37 @@
 import java.util.Scanner;
 
 public class Main {
-    static boolean iaBattle;
 
     public static void main(String[] args)
     {
-        iaBattle=true;
+        boolean iaBattle=true;
         Game game;
         Scanner sc = new Scanner(System.in);
-        String name;
-        String coord;
-        int hasHit=-1;
+        String name, coord;
+        int hasHit, iaLevel=2;
         Coordinates missileCoordinate;
+
+        System.out.println("Do you want a Player vs Player or Player vs IA battle ? Enter 0 for PvP and 1 for PvE : ");
+        try{
+            if(sc.nextInt() == 0)
+                iaBattle=false;
+        }catch (Exception e){
+            System.out.println("Not a number! Default mode is PvE. Starting a battle against an IA, level medium.");
+        }
+        sc.nextLine(); //Used to flush the input after reading an integer
         System.out.println("Player 1, enter your name: ");
         name = sc.nextLine();
         Joueur j1 = new Joueur(name);
 
         if(iaBattle){
-            AI ai = new AI(3);
+            System.out.println("Choose the IA level : 1-Easy, 2-Medium, 3-Hard:");
+            try{
+                iaLevel=sc.nextInt();
+            }catch (Exception e){
+                System.out.println("Error in the input (not an Integer). Default level is 2-medium.");
+            }
+            sc.nextLine(); //Flushing the input stream
+            AI ai = new AI(iaLevel);
             game = new Game(j1, ai);
         }
         else {

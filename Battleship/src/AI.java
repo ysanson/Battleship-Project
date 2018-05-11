@@ -1,6 +1,14 @@
 import java.util.*;
 
 public class AI extends Joueur {
+    /*The IA has three levels :
+    1- Easy : It will choose random coordinates, without checking if it has already chose it before.
+    2- Medium : It will chose random coordinates, minus the ones that have already been shot at
+    3- Hard : When the IA touches a ship, it will try to look around the coordinate, and will try to look in the orientation of the last two hits.
+    If it doesn't touch anything, it will fall back to level 2 like search.
+
+    Ship placement is independant of the level.
+     */
     private int level;
     private ArrayList<Coordinates> shotsTouched;
     private boolean isSunk, isHit;
@@ -84,6 +92,7 @@ public class AI extends Joueur {
     }
 
     public Coordinates randomCoord(){
+        //Calculates a random coordinate
         Random r = new Random();
         String line="ABCDEFGHIJ";
         char randLine=line.charAt(r.nextInt(line.length()));
@@ -135,7 +144,6 @@ public class AI extends Joueur {
         else if(level==3) {
             Random r = new Random();
             int randPos=0;
-
             if(!shotsTouched.isEmpty()) { //Must have at least one shot touched and one shot fired
                 if(!isSunk && isHit && lastTwoHitsAreNeighbors()){
                     //The ship is not sunk, we hit something and the last 2 missiles are either on the same line or same column
@@ -145,7 +153,7 @@ public class AI extends Joueur {
                         lineNeighbors.removeIf(c->getShotsFired().contains(c)); //It will remove the second last shot touched.
                         if(!lineNeighbors.isEmpty()){ //neighbors will contains either one or zero coordinates
                             System.out.println("Next shot in line");
-                            if(lineNeighbors.size()==1)
+                            if(lineNeighbors.size()==1) //Just a precaution, most likely always true
                                 return lineNeighbors.get(0);
                         }
                     }
@@ -154,13 +162,13 @@ public class AI extends Joueur {
                         columnNeighbors.removeIf(c->getShotsFired().contains(c));
                         if(!columnNeighbors.isEmpty()){
                             System.out.println("Next shot in column");
-                            if(columnNeighbors.size()==1)
+                            if(columnNeighbors.size()==1) //Just a precaution, most likely always true
                                 return columnNeighbors.get(0);
                         }
                     }
                 }
                 if(!isSunk) {
-                    //The ship is not sunk, and we hit something
+                    //The ship is not sunk
                     ArrayList<Coordinates> neighbors = shotsTouched.get(shotsTouched.size() - 1).findNeighbors();
                     //If we already shot in some of the neighbors, we remove them
                     neighbors.removeIf(c -> getShotsFired().contains(c));
