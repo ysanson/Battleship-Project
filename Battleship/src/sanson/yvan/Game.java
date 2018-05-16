@@ -1,3 +1,4 @@
+package sanson.yvan;
 import java.util.Scanner;
 public class Game {
     private Joueur player1, player2;

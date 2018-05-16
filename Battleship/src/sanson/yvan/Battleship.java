@@ -1,7 +1,7 @@
-
+package sanson.yvan;
 import java.util.Scanner;
 
-public class Main {
+public class Battleship {
 
     public static void main(String[] args)
     {

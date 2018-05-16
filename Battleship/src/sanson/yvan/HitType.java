@@ -1,3 +1,4 @@
+package sanson.yvan;
 public enum HitType {
     Hit("Hit", 1),
     Sank("Sank", 2),

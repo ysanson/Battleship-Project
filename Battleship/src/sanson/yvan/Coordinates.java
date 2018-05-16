@@ -1,5 +1,5 @@
+package sanson.yvan;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Coordinates {
 	//Usable with coordinates like A...Z1... 
@@ -42,13 +42,6 @@ public class Coordinates {
 
         if (getLine() != that.getLine()) return false;
         return getColumn() == that.getColumn();
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) getLine();
-        result = 31 * result + getColumn();
-        return result;
     }
 
     public ArrayList<Coordinates>findNeighbors(){

@@ -1,3 +1,5 @@
+package sanson.yvan;
+
 public enum ShipType {
     aircraftCarrier("Aircraft Carrier", 5),
     battleship("Battleship", 4),
