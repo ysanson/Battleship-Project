@@ -363,37 +363,39 @@ public class Joueur {
     }
 
     public static boolean isOverlapping(Ship ship, Joueur player){
-        boolean overlap;
+        boolean overlap = false;
         ArrayList<String> shipRepresentation = new ArrayList<>(ship.shipGrid()); //So we don't have to recalculate it 5 times
-        //Collections.disjoint throws an exception when empty. So if all the ships haven't been initialized yet, we have to do these try and catch
-        try {
-        	overlap = !Collections.disjoint(shipRepresentation, player.getAircraftCarrier().shipGrid()); //testing if the ship is overlapping with the carrier
-            if(overlap) return true;
-            else {
-                try{
-                    overlap = !Collections.disjoint(shipRepresentation, player.getBattleship().shipGrid());
-                }catch (Exception e){}
-                if(overlap) return true;
-                else{
-                    try {
-                        overlap = !Collections.disjoint(shipRepresentation, player.getCruiser().shipGrid());
-                    }catch (Exception e){}
-                    if(overlap) return true;
-                    else{
-                        try{
-                            overlap = !Collections.disjoint(shipRepresentation, player.getSubmarine().shipGrid());
-                        }catch (Exception e) {}
-                        if(overlap) return true;
-                        else{
-                            try{
-                                overlap = !Collections.disjoint(shipRepresentation, player.getDestroyer().shipGrid());
-                            }
-                            catch (Exception e) {}
-                        }
-                    }
-                }
+        if(player.getAircraftCarrier()!=null) {
+            if (!player.getAircraftCarrier().shipGrid().isEmpty()) { //Not really useful but still
+                overlap = !Collections.disjoint(shipRepresentation, player.getAircraftCarrier().shipGrid()); //testing if the ship is overlapping with the carrier
+                if (overlap) return true;
             }
-        }catch (Exception e){return false;}
+        }
+        if(player.getBattleship()!=null) {
+            if (!player.getBattleship().shipGrid().isEmpty()) {
+                overlap = !Collections.disjoint(shipRepresentation, player.getBattleship().shipGrid());
+                if (overlap) return true;
+            }
+        }
+        if(player.getCruiser()!=null) {
+            if (!player.getCruiser().shipGrid().isEmpty()) {
+                overlap = !Collections.disjoint(shipRepresentation, player.getCruiser().shipGrid());
+                if (overlap) return true;
+            }
+        }
+        if(player.getSubmarine()!=null) {
+            if (!player.getSubmarine().shipGrid().isEmpty()) {
+                overlap = !Collections.disjoint(shipRepresentation, player.getSubmarine().shipGrid());
+                if (overlap) return true;
+            }
+        }
+        if(player.getDestroyer()!=null) {
+            if (!player.getDestroyer().shipGrid().isEmpty()) {
+                overlap = !Collections.disjoint(shipRepresentation, player.getDestroyer().shipGrid());
+                if (overlap) return true;
+            }
+        }
+
         return overlap;
     }
 

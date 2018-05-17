@@ -22,6 +22,14 @@ public class AI extends Joueur {
         isHit=false;
     }
 
+    public AI(String name, int level){
+        super(name);
+        this.level=level;
+        shotsTouched = new ArrayList<Coordinates>();
+        isSunk=false;
+        isHit=false;
+    }
+
     @Override
     public void initialize(Scanner sc){
     	Coordinates startCoord=null, endCoord=null;
@@ -137,6 +145,9 @@ public class AI extends Joueur {
 
     public Coordinates calculateMissile(){
         Coordinates missileCoord = randomCoord();
+        if(level==1){
+            missileCoord=randomCoord();
+        }
         if(level==2) {
             while (getShotsFired().contains(missileCoord)) {
                 missileCoord = randomCoord();
