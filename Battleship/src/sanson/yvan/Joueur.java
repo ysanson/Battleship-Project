@@ -136,6 +136,14 @@ public class Joueur {
         return nbShipsLeft==0;
     }
 
+
+    public Joueur(String name) {
+        this.name = name;
+        nbShipsLeft = 5;
+        shotsFired = new ArrayList<>();
+        shotsReceived = new ArrayList<>();
+    }
+
     public void calculateShipsLeft(){
         //Updates the number of ships left for the player
         nbShipsLeft=0;
@@ -353,13 +361,6 @@ public class Joueur {
         }while (overlap);
         setDestroyer(destroyer);
         System.out.println("Completed !");
-    }
-
-    public Joueur(String name) {
-        this.name = name;
-        nbShipsLeft = 5;
-        shotsFired = new ArrayList<>();
-        shotsReceived = new ArrayList<>();
     }
 
     public static boolean isOverlapping(Ship ship, Joueur player){

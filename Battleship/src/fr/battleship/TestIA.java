@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class TestIA {
     public static void main(String args[]){
+        /*We need to reset the AIs at every game.
+         *Otherwise, it will be the same ones, and will produce bad results.
+         */
         int hasHit, turn=1;
         AI ia1, ia2, ia3;
         Scanner sc= new Scanner(System.in);
