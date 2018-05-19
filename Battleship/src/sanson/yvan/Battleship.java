@@ -44,6 +44,7 @@ public class Battleship {
         }
         do {
             game.initialize(sc, cont);
+            System.out.println("Starting with " + game.getCurrentPlayer().getName());
             while (!game.isFinished()) {
                 if (!(game.getCurrentPlayer() instanceof AI)) {
                     System.out.println("Get ready " + game.getCurrentPlayer().getName() + "!");

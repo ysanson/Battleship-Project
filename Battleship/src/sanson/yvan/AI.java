@@ -76,8 +76,6 @@ public class AI extends Joueur {
     		ship=new Ship(startCoord, endCoord, ShipType.destroyer);
     	}while(isOverlapping(ship, this));
     	setDestroyer(ship);
-    	
-    	System.out.println("Init complete.");
     }
 
     public int sendMissile(Coordinates missile, Joueur playerReceiving){
@@ -98,6 +96,51 @@ public class AI extends Joueur {
         }
 
         return hasHit;
+    }
+
+    @Override
+    public HitType receiveMissile(Coordinates missile)
+    {//We first need to know if the missile has already been shot at this position. If not, we receive it
+        if(!getShotsReceived().contains(missile)) {
+            addShotsReceived(missile);
+            if (getAircraftCarrier().isHit(missile)) {
+                getAircraftCarrier().damageShip(missile);
+                if(getAircraftCarrier().isDestroyed()){
+                    return HitType.Sank;
+                }
+                return HitType.Hit;
+            } else if (getBattleship().isHit(missile)) {
+                getBattleship().damageShip(missile);
+                if(getBattleship().isDestroyed()){
+                    return HitType.Sank;
+                }
+                return HitType.Hit;
+            } else if (getCruiser().isHit(missile)) {
+                getCruiser().damageShip(missile);
+                if(getCruiser().isDestroyed()){
+                    return HitType.Sank;
+                }
+                return HitType.Hit;
+            } else if (getDestroyer().isHit(missile)) {
+                getDestroyer().damageShip(missile);
+                if(getDestroyer().isDestroyed()){
+                    return HitType.Sank;
+                }
+                return HitType.Hit;
+            } else if (getSubmarine().isHit(missile)) {
+                getSubmarine().damageShip(missile);
+                if(getSubmarine().isDestroyed()){
+                    return HitType.Sank;
+                }
+                return HitType.Hit;
+            } else {
+                return HitType.Miss;
+            }
+        }
+        else
+        {
+            return HitType.Fired;
+        }
     }
 
     public Coordinates randomCoord(){
@@ -145,9 +188,6 @@ public class AI extends Joueur {
 
     public Coordinates calculateMissile(){
         Coordinates missileCoord = randomCoord();
-        if(level==1){
-            missileCoord=randomCoord();
-        }
         if(level==2) {
             while (getShotsFired().contains(missileCoord)) {
                 missileCoord = randomCoord();
@@ -164,7 +204,6 @@ public class AI extends Joueur {
                         ArrayList<Coordinates> lineNeighbors=shotsTouched.get(shotsTouched.size()-1).findNeighborsInline();
                         lineNeighbors.removeIf(c->getShotsFired().contains(c)); //It will remove the second last shot touched.
                         if(!lineNeighbors.isEmpty()){ //neighbors will contains either one or zero coordinates
-                            System.out.println("Next shot in line");
                             if(lineNeighbors.size()==1) //Just a precaution, most likely always true
                                 return lineNeighbors.get(0);
                         }
@@ -173,7 +212,6 @@ public class AI extends Joueur {
                         ArrayList<Coordinates>columnNeighbors=shotsTouched.get(shotsTouched.size()-1).findNeighborsInColumn();
                         columnNeighbors.removeIf(c->getShotsFired().contains(c));
                         if(!columnNeighbors.isEmpty()){
-                            System.out.println("Next shot in column");
                             if(columnNeighbors.size()==1) //Just a precaution, most likely always true
                                 return columnNeighbors.get(0);
                         }
@@ -188,7 +226,6 @@ public class AI extends Joueur {
                         do {
                             randPos = r.nextInt(neighbors.size());
                             missileCoord = neighbors.get(randPos);
-                            System.out.println("Neighbor found : " + missileCoord);
                         }
                         while (getShotsFired().contains(missileCoord)); //One of the coordinates is not yet touched : we loop until we find it
                         return missileCoord;
@@ -205,10 +242,12 @@ public class AI extends Joueur {
     }
 
     public boolean lastTwoHitsAreNeighbors(){
+        //Used to determine if we touched a ship
         if(shotsTouched.size()>1) {
             ArrayList<Coordinates> neighbors = shotsTouched.get(shotsTouched.size() - 1).findNeighbors();
             return neighbors.contains(shotsTouched.get(shotsTouched.size() - 2));
         }
         return false;
     }
+
 }

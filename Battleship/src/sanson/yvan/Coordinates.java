@@ -99,6 +99,11 @@ public class Coordinates {
 		}
 		return false;
 	}
+
+	public static boolean hitsAreNeighbors(Coordinates c1, Coordinates c2){
+		ArrayList<Coordinates> neighC1 = c1.findNeighbors();
+		return neighC1.contains(c2);
+	}
 	
 	
 	@Override

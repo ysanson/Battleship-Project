@@ -10,3 +10,5 @@ Battleship/src/META-INF/
 Battleship/out/production/Battleship/META-INF/
 
 *.jar
+
+*.csv

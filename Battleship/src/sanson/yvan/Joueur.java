@@ -155,7 +155,7 @@ public class Joueur {
     }
 
     public HitType receiveMissile(Coordinates missile)
-    {//We first need to know if the missile has already been shot at this position. If not, we reeive it
+    {//We first need to know if the missile has already been shot at this position. If not, we receive it
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
             if (aircraftCarrier.isHit(missile)) {
@@ -205,14 +205,15 @@ public class Joueur {
         else
         {
             System.out.println("Missile already shot on this position");
-            return HitType.Hit;
+            return HitType.Fired;
         }
     }
 
     public int sendMissile(Coordinates missile, Joueur playerReceiving)
     {
         if (shotsFired.contains(missile)) {
-            System.out.println("Missile already fired on this position");
+            if(!(this instanceof AI))
+                System.out.println("Missile already fired on this position");
             return -1;
         } else {
             addShotFired(missile);
@@ -221,6 +222,7 @@ public class Joueur {
     }
 
     public void initialize(Scanner sc){
+        System.out.println("Initializing " + name + ".");
         //Initializes the player. Perhaps more of a static method ?
         String sCoord, eCoord;
         Coordinates startCoord = null, endCoord = null;

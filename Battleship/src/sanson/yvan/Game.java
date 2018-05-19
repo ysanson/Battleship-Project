@@ -36,20 +36,12 @@ public class Game {
 
     public void initialize(Scanner sc, int firstPlayer) {
         //First player must be either 1 or 2. If not, player 1 will start.
-        System.out.println("Now initializing player 1 : " + player1.getName());
         player1.initialize(sc);
-        if (!(player2 instanceof AI)) {
-            System.out.println("Now initializing player 2 : " + player2.getName());
-        } else {
-            System.out.println("Now initializing AI...");
-        }
         player2.initialize(sc);
         if (firstPlayer == 2) {
-            System.out.println("Starting with player 2.");
             player1.setCurrentPlayer(false);
             player2.setCurrentPlayer(true);
         } else {
-            System.out.println("Starting with player 1.");
             player1.setCurrentPlayer(true);
             player2.setCurrentPlayer(false);
         }

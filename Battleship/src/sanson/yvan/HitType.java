@@ -2,7 +2,8 @@ package sanson.yvan;
 public enum HitType {
     Hit("Hit", 1),
     Sank("Sank", 2),
-    Miss("Miss", 0);
+    Miss("Miss", 0),
+    Fired("Already fired", -1);
 
     private String type;
     private int level;
