@@ -12,3 +12,7 @@ Battleship/out/production/Battleship/META-INF/
 *.jar
 
 *.csv
+
+\.idea/Battleship-Project\.iml
+
+*.properties

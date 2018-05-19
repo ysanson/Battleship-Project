@@ -138,7 +138,7 @@ public class Ship {
 
     @Override
     public String toString() {
-        StringBuffer output = new StringBuffer("Ship type : ");
+        StringBuffer output = new StringBuffer("Ship : ");
         output.append(type.getName());
         output.append(" Length : ");
         output.append(type.getLength());

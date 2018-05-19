@@ -15,7 +15,7 @@ public class AI extends Joueur {
     private boolean isSunk, isHit;
 
     public AI(int level) {
-        super("I-401");
+        super("AI");
         this.level=level;
         shotsTouched = new ArrayList<Coordinates>();
         isSunk=false;
@@ -78,6 +78,7 @@ public class AI extends Joueur {
     	setDestroyer(ship);
     }
 
+    @Override
     public int sendMissile(Coordinates missile, Joueur playerReceiving){
         int hasHit =  super.sendMissile(missile, playerReceiving);
         if(hasHit==2){
@@ -99,47 +100,47 @@ public class AI extends Joueur {
     }
 
     @Override
-    public HitType receiveMissile(Coordinates missile)
+    public int receiveMissile(Coordinates missile)
     {//We first need to know if the missile has already been shot at this position. If not, we receive it
         if(!getShotsReceived().contains(missile)) {
             addShotsReceived(missile);
             if (getAircraftCarrier().isHit(missile)) {
                 getAircraftCarrier().damageShip(missile);
                 if(getAircraftCarrier().isDestroyed()){
-                    return HitType.Sank;
+                    return 2;
                 }
-                return HitType.Hit;
+                return 1;
             } else if (getBattleship().isHit(missile)) {
                 getBattleship().damageShip(missile);
                 if(getBattleship().isDestroyed()){
-                    return HitType.Sank;
+                    return 2;
                 }
-                return HitType.Hit;
+                return 1;
             } else if (getCruiser().isHit(missile)) {
                 getCruiser().damageShip(missile);
                 if(getCruiser().isDestroyed()){
-                    return HitType.Sank;
+                    return 2;
                 }
-                return HitType.Hit;
+                return 1;
             } else if (getDestroyer().isHit(missile)) {
                 getDestroyer().damageShip(missile);
                 if(getDestroyer().isDestroyed()){
-                    return HitType.Sank;
+                    return 2;
                 }
-                return HitType.Hit;
+                return 1;
             } else if (getSubmarine().isHit(missile)) {
                 getSubmarine().damageShip(missile);
                 if(getSubmarine().isDestroyed()){
-                    return HitType.Sank;
+                    return 2;
                 }
-                return HitType.Hit;
+                return 1;
             } else {
-                return HitType.Miss;
+                return 0;
             }
         }
         else
         {
-            return HitType.Fired;
+            return -1;
         }
     }
 

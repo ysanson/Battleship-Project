@@ -69,18 +69,15 @@ public class Battleship {
                 } else {
                     System.out.println("AI's turn!");
                     System.out.println(game.getCurrentPlayer().toString());
-                    do {
-                        hasHit = -1;
-                        missileCoordinate = ((AI) game.getCurrentPlayer()).calculateMissile();
-                        System.out.println("The AI shoots at the coordinate " + missileCoordinate);
-                        hasHit = ((AI) game.getCurrentPlayer()).sendMissile(missileCoordinate, game.getPassivePlayer());
-                        if (hasHit == 2)
-                            System.out.println("The AI destroyed a ship!");
-                        if (hasHit == 1)
-                            System.out.println("The AI touched a ship!");
-                        else if (hasHit == 0)
-                            System.out.println("The AI touched nothing.");
-                    } while (hasHit == -1);
+                    missileCoordinate = ((AI) game.getCurrentPlayer()).calculateMissile();
+                    System.out.println("The AI shoots at the coordinate " + missileCoordinate);
+                    hasHit = game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
+                    if (hasHit == 2)
+                        System.out.println("The AI destroyed a ship!");
+                    if (hasHit == 1)
+                        System.out.println("The AI touched a ship!");
+                    else if (hasHit == 0)
+                        System.out.println("The AI touched nothing.");
                 }
 
                game.newTurn();

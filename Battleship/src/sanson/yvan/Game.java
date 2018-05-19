@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Game {
     private Joueur player1, player2;
     private int nbTurns;
+    private boolean current;//True if player 1, False if player 2
 
     public Joueur getPlayer1() {
         return player1;
@@ -39,11 +40,9 @@ public class Game {
         player1.initialize(sc);
         player2.initialize(sc);
         if (firstPlayer == 2) {
-            player1.setCurrentPlayer(false);
-            player2.setCurrentPlayer(true);
+            current=false;
         } else {
-            player1.setCurrentPlayer(true);
-            player2.setCurrentPlayer(false);
+            current=true;
         }
     }
 
@@ -57,29 +56,26 @@ public class Game {
     }
 
     public void changeCurrentPlayer(){
-        if(player1.isCurrentPlayer()){
-            player2.setCurrentPlayer(true);
-            player1.setCurrentPlayer(false);
-        }
-        else{
-            player1.setCurrentPlayer(true);
-            player2.setCurrentPlayer(false);
-        }
+        current=!current;
     }
 
     public Joueur getCurrentPlayer(){
-        if(player1.isCurrentPlayer()) return player1;
-        else return player2;
+        if(current)
+            return player1;
+        else
+            return player2;
     }
 
     public Joueur getPassivePlayer(){
-        if(player1.isCurrentPlayer()) return player2;
-        else return player1;
+        if(current)
+            return player2;
+        else
+            return player1;
     }
 
     public boolean newTurn(){
         boolean isNew=false;
-        if(player2.isCurrentPlayer()) {
+        if(!current) {
             nbTurns++;
             isNew = true;
         }
@@ -100,5 +96,4 @@ public class Game {
         sb.append(nbTurns);
         return sb.toString();
     }
-
 }

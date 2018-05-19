@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public class TestIA {
+
     public static void main(String args[]) throws FileNotFoundException{
         /*We need to reset the AIs at every game.
          *Otherwise, it will be the same ones, and will produce bad results.
@@ -29,7 +30,7 @@ public class TestIA {
             game.initialize(sc, turn);
             while(!game.isFinished()){
                 missileCoordinate = ((AI) game.getCurrentPlayer()).calculateMissile();
-                ((AI) game.getCurrentPlayer()).sendMissile(missileCoordinate, game.getPassivePlayer());
+                game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
                 game.newTurn();
             }
             if(game.whoWon()==ia1)
@@ -60,7 +61,7 @@ public class TestIA {
             game.initialize(sc, turn);
             while(!game.isFinished()){
                 missileCoordinate = ((AI) game.getCurrentPlayer()).calculateMissile();
-                ((AI) game.getCurrentPlayer()).sendMissile(missileCoordinate, game.getPassivePlayer());
+                game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
                 game.newTurn();
             }
             if(game.whoWon()==ia1)
@@ -93,7 +94,7 @@ public class TestIA {
             game.initialize( sc, turn);
             while(!game.isFinished()){
                 missileCoordinate = ((AI) game.getCurrentPlayer()).calculateMissile();
-                ((AI) game.getCurrentPlayer()).sendMissile(missileCoordinate, game.getPassivePlayer());
+                game.getCurrentPlayer().sendMissile(missileCoordinate, game.getPassivePlayer());
                 game.newTurn();
             }
             if(game.whoWon()==ia2)

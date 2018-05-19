@@ -14,7 +14,6 @@ public class Joueur {
     private int nbShipsLeft;
     private ArrayList<Coordinates>shotsFired;
     private ArrayList<Coordinates>shotsReceived;
-    private boolean currentPlayer;
 
     public String getName() {
         return name;
@@ -124,14 +123,6 @@ public class Joueur {
         shotsReceived.add(coordinates);
     }
 
-    public boolean isCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(boolean currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
     public boolean isDead(){
         return nbShipsLeft==0;
     }
@@ -154,7 +145,7 @@ public class Joueur {
         if(!destroyer.isDestroyed()) nbShipsLeft++;
     }
 
-    public HitType receiveMissile(Coordinates missile)
+    public int receiveMissile(Coordinates missile)
     {//We first need to know if the missile has already been shot at this position. If not, we receive it
         if(!shotsReceived.contains(missile)) {
             addShotsReceived(missile);
@@ -162,50 +153,50 @@ public class Joueur {
             	aircraftCarrier.damageShip(missile);
                 if(aircraftCarrier.isDestroyed()){
                     System.out.println("Aircraft Carrier sunk!");
-                    return HitType.Sank;
+                    return 2;
                 }
                 System.out.println("Aircraft Carrier damaged");
-                return HitType.Hit;
+                return 1;
             } else if (battleship.isHit(missile)) {
             	battleship.damageShip(missile);
                 if(battleship.isDestroyed()){
                     System.out.println("Battleship sunk!");
-                    return HitType.Sank;
+                    return 2;
                 }
                 System.out.println("Battleship damaged");
-                return HitType.Hit;
+                return 1;
             } else if (cruiser.isHit(missile)) {
             	cruiser.damageShip(missile);
                 if(cruiser.isDestroyed()){
                     System.out.println("Cruiser sunk!");
-                    return HitType.Sank;
+                    return 2;
                 }
                 System.out.println("Cruiser damaged");
-                return HitType.Hit;
+                return 1;
             } else if (destroyer.isHit(missile)) {
             	destroyer.damageShip(missile);
                 if(destroyer.isDestroyed()){
                     System.out.println("Destroyer sunk!");
-                    return HitType.Sank;
+                    return 2;
                 }
                 System.out.println("Destroyer damaged");
-                return HitType.Hit;
+                return 1;
             } else if (submarine.isHit(missile)) {
             	submarine.damageShip(missile);
                 if(submarine.isDestroyed()){
                     System.out.println("Submarine sunk!");
-                    return HitType.Sank;
+                    return 2;
                 }
                 System.out.println("Submarine damaged");
-                return HitType.Hit;
+                return 1;
             } else {
-                return HitType.Miss;
+                return 0;
             }
         }
         else
         {
             System.out.println("Missile already shot on this position");
-            return HitType.Fired;
+            return -1;
         }
     }
 
@@ -217,7 +208,7 @@ public class Joueur {
             return -1;
         } else {
             addShotFired(missile);
-            return playerReceiving.receiveMissile(missile).getLevel();
+            return playerReceiving.receiveMissile(missile);
         }
     }
 
@@ -405,15 +396,15 @@ public class Joueur {
     @Override
     public String toString() {
         return "{" +
-                "name='" + name + '\'' +
-                "\n aircraftCarrier=" + aircraftCarrier +
-                "\n battleship=" + battleship +
-                "\n cruiser=" + cruiser +
-                "\n submarine=" + submarine +
-                "\n destroyer=" + destroyer +
-                "\n Number of ships left=" + nbShipsLeft +
-                "\n Shots fired=" + shotsFired +
-                "\n Shots received=" + shotsReceived +
+                "Name='" + name  +
+                "\n" + aircraftCarrier +
+                "\n " + battleship +
+                "\n" + cruiser +
+                "\n" + submarine +
+                "\n" + destroyer +
+                "\n Number of ships still afloat: " + nbShipsLeft +
+                "\n Shots fired: " + shotsFired +
+                "\n Shots received: " + shotsReceived +
                 '}';
     }
 }

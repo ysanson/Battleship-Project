@@ -1,8 +1,12 @@
 package sanson.yvan;
 import java.util.ArrayList;
+import java.lang.NumberFormatException;
 
-public class Coordinates {
-	//Usable with coordinates like A...Z1... 
+public class Coordinates  {
+	/*Class Coordinates
+	 * Usage : this class can throw NumberFormatException if the constructor can't parse the string in parameter.
+	 * It is recommended to use the static fonction isCorrect before creating a new coordinate.
+	 */
 	private char line;
 	private int column;
 	
@@ -28,7 +32,7 @@ public class Coordinates {
 		this.column = column;
 	}
 
-	public Coordinates(String coord){
+	public Coordinates(String coord) throws NumberFormatException{
 		line=coord.toUpperCase().charAt(0);
 		column=Integer.parseInt(coord.substring(1));
 	}
